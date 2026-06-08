@@ -1,0 +1,53 @@
+[workspace]
+authors = ["Nikhil Padmanabhan <nikhil.padmanabhan@gmail.com>"]
+channels = ["conda-forge"]
+name = "roman_disperser_tutorials"
+platforms = ["osx-arm64", "linux-64"]
+version = "0.1.0"
+
+# Developer-only environment for authoring/testing the tutorials. Users do
+# NOT use pixi — they use conda (NERSC/RRN) or pip (laptop). See CLAUDE.md.
+
+[dependencies]
+python = ">=3.12, <3.13"
+
+[pypi-dependencies]
+# Pull the disperser from git (not the ../roman_disperser sibling) so this
+# repo is reproducible off a laptop — on the GPU box, in CI, etc. [full]
+# brings astropy/synphot/tqdm/pytest. Pin a tag/branch here when the
+# tutorials need to track a specific disperser release.
+#
+# SSH URL (not https): the disperser repo is private, and this dev manifest
+# resolves via the maintainer's registered SSH key. Laptop *users* use the
+# https form + `gh auth login` (see environment.yml / docs/SETUP.md).
+roman_disperser = { git = "ssh://git@github.com/roman-grs-pit/roman_disperser.git", extras = ["full"] }
+
+[tasks]
+# Confirm which JAX backend is live in the active environment.
+check-jax = "python -c 'import jax; print(f\"Backend: {jax.default_backend()}\"); print(jax.devices())'"
+
+# --- ENVIRONMENTS ---
+# default = laptop/CPU (osx-arm64 + linux-64); cuda = linux GPU box.
+[environments]
+default = ["cpu", "notebook"]
+cuda = ["cuda", "notebook"]
+
+# --- FEATURES ---
+
+# Notebook tooling shared by every environment.
+[feature.notebook.dependencies]
+jupyterlab = "*"
+ipykernel = "*"
+
+# JAX is NOT pinned at the top level on purpose (see CLAUDE.md "The JAX
+# seam"). Each environment selects its backend build here instead.
+[feature.cpu.dependencies]
+jax = ">=0.7"
+
+[feature.cuda]
+platforms = ["linux-64"]
+system-requirements = { cuda = "12" }
+
+[feature.cuda.dependencies]
+jax = ">=0.7"
+jaxlib = { version = "*", build = "cuda12*" }
