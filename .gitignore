@@ -216,3 +216,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Hydrated reference data (fetched by roman-disperser-hydrate; not committed)
+/data/

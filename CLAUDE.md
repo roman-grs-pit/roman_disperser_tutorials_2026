@@ -70,6 +70,25 @@ Consequences, and the reason JAX is **never pinned** in this repo's env files:
   `roman_disperser/INSTALL.md`.** Tutorials *link* to it; do not duplicate the
   `cuda12-local` vs `cuda12` decision here — a second copy will drift.
 
+## Reference data (hydration)
+
+The disperser's reference data is **vendored** (disperser ≥ 0.10.0) — fetched
+with `roman-disperser-hydrate`, not shipped in the package. Both env files pin
+the disperser to **`v0.10.0`** (the first release with the command); bump the
+pin together in `pixi.toml` and `environment.yml`.
+
+- **Data resolution** (disperser side): `$ROMAN_DISPERSER_DATA` →
+  `$PIXI_PROJECT_ROOT/data` → `./data`. So the **dev pixi env** lands data in
+  `tutorials/data` automatically (`pixi run hydrate`); **laptop users** must set
+  `ROMAN_DISPERSER_DATA`; **NERSC/RRN** shared envs must export it (env-maintainer
+  TODO, flagged in `docs/SETUP.md` §1/§2).
+- **Jupyter kernels do not inherit your shell env.** `ROMAN_DISPERSER_DATA` must
+  be set *for the kernel* — via the `kernel.json` `"env"` block (laptop) or the
+  NERSC `kernel-helper.sh`. Documented in `docs/SETUP.md` §4. This is the most
+  common "works in the terminal, not in the notebook" trap.
+- Hydration mechanics (manifest/lock, `--only`/`--sca`) live in the disperser's
+  `INSTALL.md`; tutorials link to it rather than duplicating.
+
 ## Validation gate
 
 Local `pixi run check-jax` and a headless `nbconvert --execute` catch gross

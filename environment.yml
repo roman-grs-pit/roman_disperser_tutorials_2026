@@ -17,4 +17,6 @@ dependencies:
   - ipykernel
   - pip
   - pip:
-      - "roman_disperser[full] @ git+https://github.com/roman-grs-pit/roman_disperser.git"
+      # Pinned to v0.10.0 (first release with `roman-disperser-hydrate`); bump
+      # as the tutorials track new disperser releases.
+      - "roman_disperser[full] @ git+https://github.com/roman-grs-pit/roman_disperser.git@v0.10.0"

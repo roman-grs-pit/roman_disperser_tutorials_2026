@@ -32,6 +32,11 @@ For a **notebook kernel** (first-time setup, including the kernel-helper that
 sets the reference-data paths), follow
 [activating_conda_environment.md](activating_conda_environment.md).
 
+> **Env maintainer TODO:** the shared setup should export `ROMAN_DISPERSER_DATA`
+> (pointing at the shared reference data) in both `.grism_sim_setup` and the
+> kernel-helper — it's new in disperser 0.10.0 and is how the library locates
+> its vendored data on NERSC. See §4.
+
 Verify the expected reference-data env vars are set:
 
 ```bash
@@ -43,8 +48,8 @@ bash ../check_env.sh   # from the docs/ dir; or `bash check_env.sh` from repo ro
 ## 2. Roman Research Nexus / RRN (CPU)
 
 RRN uses a shared environment too — like NERSC, you activate it rather than
-build it. (Activation specifics: **TBD** — fill in once the common RRN install
-path is finalized.)
+build it. (Activation specifics, and the shared `ROMAN_DISPERSER_DATA` export +
+kernel env: **TBD** — fill in once the common RRN install path is finalized.)
 
 RRN has no GPU today; the CPU JAX floor is all you need. You should not need to
 clone the disperser or authenticate to GitHub.
@@ -72,7 +77,7 @@ conda activate roman-disperser-tutorials
 
 # Option B — virtualenv
 python -m venv .venv && source .venv/bin/activate
-pip install "roman_disperser[full] @ git+https://github.com/roman-grs-pit/roman_disperser.git"
+pip install "roman_disperser[full] @ git+https://github.com/roman-grs-pit/roman_disperser.git@v0.10.0"
 pip install jupyterlab ipykernel
 ```
 
@@ -84,31 +89,84 @@ python -m ipykernel install --user \
     --display-name "Roman Disperser Tutorials"
 ```
 
+Then **hydrate the reference data and wire `ROMAN_DISPERSER_DATA` into the
+kernel** — see [§4](#4-reference-data). (A laptop has no shared data, so this
+step is on you.)
+
 For GPU on a workstation with NVIDIA hardware, add the JAX overlay per the
 disperser INSTALL link above (Apple-silicon laptops are CPU-only here).
 
 ---
 
-## 4. Data assets
+## 4. Reference data
 
-The tutorials may need PSF caches and/or the source catalog. These are public
-downloads handled by the disperser's own scripts — see
-[`roman_disperser/INSTALL.md` → Data files](https://github.com/roman-grs-pit/roman_disperser/blob/main/INSTALL.md#data-files).
-On NERSC/RRN the shared caches are already in place.
+`roman_disperser` fetches all its reference data (optical model, sensitivities,
+synphot, PSF caches, source catalog) with the `roman-disperser-hydrate` command
+— full details in
+[`roman_disperser/INSTALL.md` → Reference data](https://github.com/roman-grs-pit/roman_disperser/blob/main/INSTALL.md#reference-data).
+
+**NERSC / RRN** — already hydrated in the shared environment; nothing to do. The
+shared env also sets `ROMAN_DISPERSER_DATA` so the library finds it (see §1/§2).
+
+**Laptop** — point `ROMAN_DISPERSER_DATA` at a stable directory, then hydrate:
+
+```bash
+export ROMAN_DISPERSER_DATA=~/roman_disperser_data   # any path; add to ~/.bashrc
+roman-disperser-hydrate                              # everything (~4.5 GB)
+```
+
+For a lighter laptop footprint, fetch only what a given tutorial needs:
+
+```bash
+roman-disperser-hydrate --only optical_model,sensitivities,synphot   # essentials (~2 MB)
+roman-disperser-hydrate --only catalog                               # source catalog (~155 MB)
+roman-disperser-hydrate --only psf --sca 1 2                         # just some PSF SCAs
+```
+
+### Making the data visible to the Jupyter kernel
+
+A kernel does **not** inherit your shell's environment, so set
+`ROMAN_DISPERSER_DATA` for the kernel itself:
+
+- **Laptop** — add an `env` block to the kernel's `kernel.json` (registered in §3):
+  ```bash
+  KJ=~/.local/share/jupyter/kernels/roman-disperser-tutorials/kernel.json
+  python - "$KJ" <<'PY'
+  import json, os, sys
+  p = sys.argv[1]; d = json.load(open(p))
+  d.setdefault("env", {})["ROMAN_DISPERSER_DATA"] = os.environ["ROMAN_DISPERSER_DATA"]
+  json.dump(d, open(p, "w"), indent=2)
+  PY
+  ```
+  (Equivalently, edit `kernel.json` and add `"env": {"ROMAN_DISPERSER_DATA": "/your/path"}`.)
+- **NERSC** — the `kernel-helper.sh` wired into the kernel (see
+  [activating_conda_environment.md](activating_conda_environment.md)) already
+  exports the reference-data paths; `ROMAN_DISPERSER_DATA` belongs there too.
 
 ---
 
 ## 5. Verify
 
-In any environment:
+In any environment — this checks the import, that the reference data resolves
+and loads, and the JAX backend:
 
 ```bash
-python -c "import roman_disperser; import jax; print('disperser OK; backend:', jax.default_backend())"
+python -c "
+import jax
+from roman_disperser.pipeline import resolve_paths
+from roman_disperser.optical_model import RomanOpticalModel
+*_, optical_model, _ = resolve_paths()
+RomanOpticalModel(str(optical_model))            # fails if data isn't hydrated/found
+print('disperser OK; data at', optical_model.parent, '; backend:', jax.default_backend())
+"
 ```
 
 `backend: gpu` confirms a working GPU overlay; `cpu` is expected everywhere
-else. Then launch JupyterLab (or open the notebooks in RRN/NERSC Jupyter) and
-select the **Roman Disperser Tutorials** kernel.
+else. A `FileNotFoundError` here means the data isn't hydrated or
+`ROMAN_DISPERSER_DATA` isn't set (see §4). Then launch JupyterLab (or open the
+notebooks in RRN/NERSC Jupyter) and select the **Roman Disperser Tutorials**
+kernel — and confirm the same check passes *inside a notebook cell* (that
+exercises the kernel's env, not your shell's).
 
 ---
 

@@ -14,17 +14,20 @@ python = ">=3.12, <3.13"
 [pypi-dependencies]
 # Pull the disperser from git (not the ../roman_disperser sibling) so this
 # repo is reproducible off a laptop — on the GPU box, in CI, etc. [full]
-# brings astropy/synphot/tqdm/pytest. Pin a tag/branch here when the
-# tutorials need to track a specific disperser release.
+# brings astropy/synphot/tqdm/pytest. Pinned to v0.10.0, the first release
+# with `roman-disperser-hydrate`; bump as the tutorials track new releases.
 #
 # SSH URL (not https): the disperser repo is private, and this dev manifest
 # resolves via the maintainer's registered SSH key. Laptop *users* use the
 # https form + `gh auth login` (see environment.yml / docs/SETUP.md).
-roman_disperser = { git = "ssh://git@github.com/roman-grs-pit/roman_disperser.git", extras = ["full"] }
+roman_disperser = { git = "ssh://git@github.com/roman-grs-pit/roman_disperser.git", tag = "v0.10.0", extras = ["full"] }
 
 [tasks]
 # Confirm which JAX backend is live in the active environment.
 check-jax = "python -c 'import jax; print(f\"Backend: {jax.default_backend()}\"); print(jax.devices())'"
+# Hydrate reference data into the dev data dir (PIXI_PROJECT_ROOT/data). Flags
+# pass through, e.g. `pixi run hydrate --only optical_model,sensitivities,synphot`.
+hydrate = "roman-disperser-hydrate"
 
 # --- ENVIRONMENTS ---
 # default = laptop/CPU (osx-arm64 + linux-64); cuda = linux GPU box.
