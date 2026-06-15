@@ -35,9 +35,10 @@ linux-64 GPU box (CUDA 12).
 - **Developers use pixi; users do not.** Pixi fights the conda module system
   and `$HOME` quotas on NERSC/RRN, and is more than a tutorial reader should
   have to learn. Pixi is a dev-only tool here.
-- **`pixi.toml`** (dev) mirrors the parent's pattern: platforms
-  `osx-arm64` + `linux-64`, environments `default` (CPU) and `cuda`
-  (linux-64). One file covers laptop + GPU box.
+- **`pixi.toml`** (dev) is the single source of truth: platforms
+  `osx-arm64` + `linux-64`, environments `default` (CPU) and `gpu` (CUDA,
+  linux-64). **Both bundle romanisim**, so the disperse→wrap pipeline runs in
+  one kernel (no kernel switching). One file covers laptop + GPU box.
 - The disperser is pulled **from git**, not the `../roman_disperser` sibling
   path, so this repo is reproducible off a laptop (GPU box, CI).
 - **The disperser repo is PRIVATE.** Org membership is authorization, not
@@ -45,9 +46,12 @@ linux-64 GPU box (CUDA 12).
   helper) or a registered SSH key. This affects only the **laptop** path and
   the **maintainer pixi solve**; NERSC/RRN use pre-installed shared envs.
   `docs/SETUP.md` documents `gh auth login` as a laptop prerequisite.
-- **`environment.yml`** (user) is the minimal conda spec for **laptop** users
-  only: `roman_disperser[full]` from git + `jupyterlab` + `ipykernel`. NERSC
-  and RRN users use their shared envs, not this file.
+- **`environment-cpu.yml` / `environment-gpu.yml`** (user) are the two conda
+  specs users build from — **generated** from the pixi envs by
+  `scripts/export-conda-envs.sh` (which rewrites the disperser URL ssh→https
+  and names the conda env). Don't hand-edit; edit `pixi.toml` and rerun.
+  `-cpu` = laptop / RRN / NERSC-CPU; `-gpu` = NERSC-GPU / GPU box. NERSC/RRN
+  shared envs are built from these too.
 
 ## The JAX seam (important, easy to get wrong)
 
@@ -63,9 +67,10 @@ Consequences, and the reason JAX is **never pinned** in this repo's env files:
 - In the pip/conda world it's a deliberate **overlay**: a CPU `jax` floor
   arrives via `roman_disperser`; GPU users then run
   `pip install jax[cuda12-local]` (or `[cuda12]`) themselves.
-- If we hard-pinned a CPU `jaxlib` in `environment.yml`, it would *fight* a
+- If we hard-pinned a CPU `jaxlib` in the env ymls, it would *fight* a
   user's later GPU overlay — silent CPU fallback or a version conflict. So
-  env files stay JAX-agnostic.
+  env files stay JAX-agnostic (the `-gpu` yml carries `jaxlib cuda12*`; the
+  `-cpu` yml leaves the floor).
 - **Single source of truth for the JAX-flavor choice is
   `roman_disperser/INSTALL.md`.** Tutorials *link* to it; do not duplicate the
   `cuda12-local` vs `cuda12` decision here — a second copy will drift.
@@ -73,9 +78,9 @@ Consequences, and the reason JAX is **never pinned** in this repo's env files:
 ## Reference data (hydration)
 
 The disperser's reference data is **vendored** (disperser ≥ 0.10.0) — fetched
-with `roman-disperser-hydrate`, not shipped in the package. Both env files pin
-the disperser to **`v0.10.0`** (the first release with the command); bump the
-pin together in `pixi.toml` and `environment.yml`.
+with `roman-disperser-hydrate`, not shipped in the package. The disperser is
+pinned to **`v0.10.0`** (first release with the command) in `pixi.toml`; the
+env ymls inherit it via the export script — bump it in `pixi.toml` only.
 
 - **Data resolution** (disperser side): `$ROMAN_DISPERSER_DATA` →
   `$PIXI_PROJECT_ROOT/data` → `./data`. So the **dev pixi env** lands data in
@@ -98,8 +103,10 @@ before publishing. A laptop pixi run is necessary, not sufficient.
 
 ## Files
 
-- `pixi.toml` — developer environment (CPU + cuda). Root (not `docs/`).
-- `environment.yml` — laptop user conda env. Root.
+- `pixi.toml` — dev environment + single source of truth (CPU + gpu, both with
+  romanisim). Root (not `docs/`).
+- `environment-cpu.yml` / `environment-gpu.yml` — user conda envs, GENERATED
+  from `pixi.toml` by `scripts/export-conda-envs.sh`. Root.
 - `docs/SETUP.md` — canonical, standalone user setup (all three contexts).
 - `docs/activating_conda_environment.md` — NERSC kernel/setup specifics;
   `docs/SETUP.md` links here rather than duplicating.

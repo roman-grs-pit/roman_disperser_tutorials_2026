@@ -11,13 +11,13 @@ whether or not you attended a live session.
 
 See **[docs/SETUP.md](docs/SETUP.md)** for environment setup. In short:
 
-- **NERSC** (GPU) — activate the curated shared `$roman` conda environment.
-- **RRN** (CPU) — activate the shared RRN environment (common install path).
-- **Laptop** (CPU) — pip-install the disperser into a venv/conda (the only
-  path that needs GitHub access to the private repo).
+- **NERSC / RRN** — activate the curated shared conda environment (built from
+  `environment-gpu.yml` / `environment-cpu.yml`).
+- **Laptop** (CPU) — `conda env create -f environment-cpu.yml` (needs GitHub
+  access to the private disperser repo — `gh auth login` first).
 
-The same notebooks run on CPU or GPU; only the JAX install differs (SETUP.md
-explains the one-step GPU overlay).
+Both env files bundle romanisim, so the full disperse→wrap pipeline runs in one
+kernel. The same notebooks run on CPU or GPU; only the JAX build differs.
 
 ## Contents
 

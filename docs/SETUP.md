@@ -68,18 +68,19 @@ gh auth login          # easiest: sets up a git credential helper pip will use
 #         git+ssh:// form of the URL below.
 ```
 
-Then either conda or a plain virtualenv:
+Then create the environment with conda from **`environment-cpu.yml`** (it
+bundles romanisim, so the disperse→wrap pipeline runs in one kernel):
 
 ```bash
-# Option A — conda (uses this repo's environment.yml)
-conda env create -f environment.yml
+conda env create -f environment-cpu.yml
 conda activate roman-disperser-tutorials
-
-# Option B — virtualenv
-python -m venv .venv && source .venv/bin/activate
-pip install "roman_disperser[full] @ git+https://github.com/roman-grs-pit/roman_disperser.git@v0.10.0"
-pip install jupyterlab ipykernel
 ```
+
+> A pure `pip`/venv install of *just* the disperser also works if you don't need
+> the romanisim wrap (`pip install "roman_disperser[full] @
+> git+https://github.com/roman-grs-pit/roman_disperser.git@v0.10.0"` plus
+> `jupyterlab ipykernel`) — but romanisim needs conda for `fftw`, so the yml is
+> the supported path.
 
 Register a kernel:
 

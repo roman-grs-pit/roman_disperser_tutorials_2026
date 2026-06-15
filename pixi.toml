@@ -30,10 +30,13 @@ check-jax = "python -c 'import jax; print(f\"Backend: {jax.default_backend()}\")
 hydrate = "roman-disperser-hydrate"
 
 # --- ENVIRONMENTS ---
-# default = laptop/CPU (osx-arm64 + linux-64); cuda = linux GPU box.
+# Both envs bundle romanisim (the full disperse -> wrap pipeline), so users
+# never switch kernels. default = CPU (laptop / RRN / NERSC-CPU) ->
+# environment-cpu.yml; gpu = CUDA (NERSC-GPU / GPU box, linux-64) ->
+# environment-gpu.yml.
 [environments]
-default = ["cpu", "notebook"]
-cuda = ["cuda", "notebook"]
+default = ["cpu", "notebook", "romanisim"]
+gpu = ["cuda", "notebook", "romanisim"]
 
 # --- FEATURES ---
 
@@ -54,3 +57,16 @@ system-requirements = { cuda = "12" }
 [feature.cuda.dependencies]
 jax = ">=0.7"
 jaxlib = { version = "*", build = "cuda12*" }
+
+# romanisim (spectro acceptance / wrap). Cross-platform; pulls galsim/asdf/
+# roman_datamodels transitively. Pinned to spacetelescope/romanisim@main:
+# the `--extra-counts` feature merged upstream but is not yet in a PyPI
+# release (latest is 0.14.0, which predates it) — switch to a PyPI spec once
+# a release > 0.14.0 ships it.
+[feature.romanisim.dependencies]
+fftw = "*"
+
+[feature.romanisim.pypi-dependencies]
+crds = ">=13.0.2"
+stpsf = ">=2.1.0"
+romanisim = { git = "https://github.com/spacetelescope/romanisim.git", branch = "main" }
