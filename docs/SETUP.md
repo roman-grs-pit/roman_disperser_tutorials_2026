@@ -32,10 +32,9 @@ For a **notebook kernel** (first-time setup, including the kernel-helper that
 sets the reference-data paths), follow
 [activating_conda_environment.md](activating_conda_environment.md).
 
-> **Env maintainer TODO:** the shared setup should export `ROMAN_DISPERSER_DATA`
-> (pointing at the shared reference data) in both `.grism_sim_setup` and the
-> kernel-helper — it's new in disperser 0.10.0 and is how the library locates
-> its vendored data on NERSC. See §4.
+> `.grism_sim_setup` exports `ROMAN_DISPERSER_DATA` (the shared reference data,
+> read-only via `/dvs_ro`), and `kernel-helper.sh` carries it into notebooks —
+> so data resolution is automatic on NERSC, in both shells and kernels. See §4.
 
 Verify the expected reference-data env vars are set:
 
@@ -82,12 +81,12 @@ conda activate roman-disperser-tutorials
 > `jupyterlab ipykernel`) — but romanisim needs conda for `fftw`, so the yml is
 > the supported path.
 
-Register a kernel:
+Register a kernel (name derived from the active env, as on NERSC):
 
 ```bash
+KNAME=$(basename "$CONDA_PREFIX")            # roman-disperser-tutorials
 python -m ipykernel install --user \
-    --name roman-disperser-tutorials \
-    --display-name "Roman Disperser Tutorials"
+    --name "$KNAME" --display-name "Roman Disperser Tutorials"
 ```
 
 Then **hydrate the reference data and wire `ROMAN_DISPERSER_DATA` into the
@@ -131,7 +130,7 @@ A kernel does **not** inherit your shell's environment, so set
 
 - **Laptop** — add an `env` block to the kernel's `kernel.json` (registered in §3):
   ```bash
-  KJ=~/.local/share/jupyter/kernels/roman-disperser-tutorials/kernel.json
+  KJ=~/.local/share/jupyter/kernels/$(basename "$CONDA_PREFIX")/kernel.json
   python - "$KJ" <<'PY'
   import json, os, sys
   p = sys.argv[1]; d = json.load(open(p))
@@ -140,9 +139,10 @@ A kernel does **not** inherit your shell's environment, so set
   PY
   ```
   (Equivalently, edit `kernel.json` and add `"env": {"ROMAN_DISPERSER_DATA": "/your/path"}`.)
-- **NERSC** — the `kernel-helper.sh` wired into the kernel (see
-  [activating_conda_environment.md](activating_conda_environment.md)) already
-  exports the reference-data paths; `ROMAN_DISPERSER_DATA` belongs there too.
+- **NERSC** — nothing to do: `kernel-helper.sh` (wired in by
+  [activating_conda_environment.md](activating_conda_environment.md)) makes
+  `ROMAN_DISPERSER_DATA` available to the kernel, so notebooks resolve the
+  shared data automatically.
 
 ---
 
