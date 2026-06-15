@@ -14,6 +14,22 @@ environment glue, and a self-contained setup path.
 tutorial should be able to set up an environment and run everything from the
 docs alone. Don't assume the reader was in the room.
 
+## Status (2026-06-15)
+
+Infrastructure is done; **the tutorial notebooks are the next phase** (none
+written yet — `notebooks/` is empty). Working branch: `setup-dev-environment`.
+
+- Disperser released as **v0.10.0** (vendored reference data + `roman-disperser-hydrate`).
+- Env model settled: one combined env (disperser + romanisim + jupyter), CPU & GPU.
+- **NERSC env is built and verified** (see "NERSC deployment" below): shared
+  CPU+GPU conda envs, data hydrated to CFS, auto-named kernels that resolve
+  `ROMAN_DISPERSER_DATA` inside notebooks.
+- Intended notebook shape: disperse → save grism FITS → reload → **romanisim
+  wrap**. The wrap step (`romanisim-make-image`) is **NERSC-first** — it needs the
+  large CRDS + STPSF caches (staged on NERSC; impractical on a laptop) and hasn't
+  been exercised end-to-end yet.
+- **RRN deployment is deferred.**
+
 ## The audience matrix (drives every env decision)
 
 Three **user** runtime contexts:
@@ -86,14 +102,45 @@ env ymls inherit it via the export script — bump it in `pixi.toml` only.
 - **Data resolution** (disperser side): `$ROMAN_DISPERSER_DATA` →
   `$PIXI_PROJECT_ROOT/data` → `./data`. So the **dev pixi env** lands data in
   `tutorials/data` automatically (`pixi run hydrate`); **laptop users** must set
-  `ROMAN_DISPERSER_DATA`; **NERSC/RRN** shared envs must export it (env-maintainer
-  TODO, flagged in `docs/SETUP.md` §1/§2).
+  `ROMAN_DISPERSER_DATA`; **NERSC** already exports it via `.grism_sim_setup`
+  (see "NERSC deployment" below). RRN deferred.
 - **Jupyter kernels do not inherit your shell env.** `ROMAN_DISPERSER_DATA` must
   be set *for the kernel* — via the `kernel.json` `"env"` block (laptop) or the
   NERSC `kernel-helper.sh`. Documented in `docs/SETUP.md` §4. This is the most
   common "works in the terminal, not in the notebook" trap.
 - Hydration mechanics (manifest/lock, `--only`/`--sca`) live in the disperser's
   `INSTALL.md`; tutorials link to it rather than duplicating.
+
+## NERSC deployment (maintainer)
+
+The shared NERSC envs are built from the generated ymls. Key facts + gotchas,
+distilled from the build (`m4943` is the project):
+
+- **Envs:** `/global/common/software/m4943/envs/roman-tutorials-{cpu,gpu}`, built
+  with `mamba env create -f environment-{cpu,gpu}.yml -p <prefix>`. Prereqs:
+  `gh auth login` (private disperser clones over HTTPS mid-build),
+  `CONDA_PKGS_DIRS=$SCRATCH/conda-pkgs` (keep the pkg cache off `$HOME`),
+  `chmod -R g+rX` for group read. Build on a login node — no GPU needed to *build*.
+- **`.grism_sim_setup`** exports `tutorial_2026_cpu` / `tutorial_2026_gpu` (env
+  paths; users `conda activate $tutorial_2026_gpu`) and `ROMAN_DISPERSER_DATA`.
+- **Data:** hydrated to `/global/cfs/cdirs/m4943/grismsim/roman-disperser-data`
+  (writable); users/kernels read the **`/dvs_ro`** mirror (read-only, like
+  `STPSF_PATH`) — runtime only reads. Re-hydrate by overriding
+  `ROMAN_DISPERSER_DATA` back to the writable path.
+- **Kernels:** auto-named from `$CONDA_PREFIX`, wrapped in `kernel-helper.sh`
+  (which propagates `ROMAN_DISPERSER_DATA` to notebooks). See
+  `docs/activating_conda_environment.md`.
+
+Gotchas:
+- **The `jaxlib cpu*` pin is load-bearing.** conda-forge resolves the CUDA jaxlib
+  when an env is *built* on a GPU host (the `__cuda` virtual package), so without
+  the pin the "CPU" env grabs the shared login GPU and OOMs. Pinned in
+  `pixi.toml`'s cpu feature → flows to `environment-cpu.yml`.
+- **GPU is only verifiable on a GPU *compute* node** (`salloc -C gpu`); the login
+  GPU is shared and OOMs regardless of env.
+- The pkg cache on `$SCRATCH` is a different filesystem from the CFS env prefix,
+  so conda *copies* (no hardlinks) → envs are self-contained and the scratch
+  auto-purge can't break them.
 
 ## Validation gate
 
