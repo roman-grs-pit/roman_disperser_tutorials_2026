@@ -67,10 +67,11 @@ Consequences, and the reason JAX is **never pinned** in this repo's env files:
 - In the pip/conda world it's a deliberate **overlay**: a CPU `jax` floor
   arrives via `roman_disperser`; GPU users then run
   `pip install jax[cuda12-local]` (or `[cuda12]`) themselves.
-- If we hard-pinned a CPU `jaxlib` in the env ymls, it would *fight* a
-  user's later GPU overlay — silent CPU fallback or a version conflict. So
-  env files stay JAX-agnostic (the `-gpu` yml carries `jaxlib cuda12*`; the
-  `-cpu` yml leaves the floor).
+- Each env yml pins its backend build explicitly: `-gpu` carries
+  `jaxlib cuda12*`, `-cpu` carries `jaxlib cpu*`. The `-cpu` pin matters on
+  NERSC: conda-forge resolves the CUDA jaxlib if the env is *built* on a GPU
+  host (the `__cuda` virtual package), so without it the "CPU" env grabs the
+  GPU and OOMs on a shared login node.
 - **Single source of truth for the JAX-flavor choice is
   `roman_disperser/INSTALL.md`.** Tutorials *link* to it; do not duplicate the
   `cuda12-local` vs `cuda12` decision here — a second copy will drift.

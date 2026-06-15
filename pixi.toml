@@ -49,6 +49,11 @@ ipykernel = "*"
 # seam"). Each environment selects its backend build here instead.
 [feature.cpu.dependencies]
 jax = ">=0.7"
+# Pin the CPU jaxlib build. conda-forge otherwise resolves the CUDA variant
+# when the env is BUILT on a GPU host (e.g. a NERSC GPU login node), so the
+# "cpu" env would grab the GPU and OOM. `cpu*` matches the conda-forge CPU
+# builds on both osx-arm64 and linux-64.
+jaxlib = { version = "*", build = "cpu*" }
 
 [feature.cuda]
 platforms = ["linux-64"]
