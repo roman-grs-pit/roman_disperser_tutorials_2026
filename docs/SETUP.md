@@ -25,7 +25,7 @@ A curated shared environment already exists — don't build your own.
 ```bash
 source /global/common/software/m4943/.grism_sim_setup
 module load conda
-conda activate $roman
+conda activate $tutorial_2026_cpu  # replace cpu with gpu to use a GPU
 ```
 
 For a **notebook kernel** (first-time setup, including the kernel-helper that
