@@ -73,9 +73,13 @@ zarr, astropy, synphot), so a **venv is the lightest path** — no conda require
 
 **Option A — venv + pip (recommended):**
 
+Run this from the cloned tutorials repo; `.venv` (and `./data` below) are
+git-ignored, so the venv, the data, and the notebooks all live in one folder —
+the same layout the maintainer pixi setup uses.
+
 ```bash
-python -m venv ~/roman-tut
-source ~/roman-tut/bin/activate
+python -m venv .venv          # in the repo root; .venv is git-ignored
+source .venv/bin/activate
 pip install "roman_disperser[full] @ git+https://github.com/roman-grs-pit/roman_disperser.git@v0.10.0" \
     jupyterlab ipykernel
 ```
@@ -99,7 +103,7 @@ python -m ipykernel install --user --name roman-tutorials \
 they need (a few hundred MB) rather than all 18 SCAs:
 
 ```bash
-export ROMAN_DISPERSER_DATA=~/roman_disperser_data        # any stable path; add to ~/.bashrc
+export ROMAN_DISPERSER_DATA=$PWD/data        # co-located in the repo (./data is git-ignored); or any stable path
 roman-disperser-hydrate --only optical_model,sensitivities,synphot   # essentials (~2 MB)
 roman-disperser-hydrate --only psf --sca 5                          # PSF cache for SCA 5
 roman-disperser-hydrate --only catalog                              # source catalog (~155 MB; notebook 06)
