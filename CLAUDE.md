@@ -14,34 +14,43 @@ environment glue, and a self-contained setup path.
 tutorial should be able to set up an environment and run everything from the
 docs alone. Don't assume the reader was in the room.
 
-## Status (2026-06-15)
+## Status (2026-06-16)
 
-Infrastructure is done; **the tutorial notebooks are the next phase** (none
-written yet — `notebooks/` is empty). Working branch: `setup-dev-environment`.
+**Tutorial notebooks 00–08 are written, executed, and merged to `main`.** They
+run from `docs/SETUP.md` alone (standalone goal met) and were dress-rehearsed on
+a laptop. A NERSC run-through — the real shared-env gate, and the only place the
+GPU notebook runs at scale — is still pending.
 
-- Disperser released as **v0.10.0** (vendored reference data + `roman-disperser-hydrate`).
-- Env model settled: one combined env (disperser + romanisim + jupyter), CPU & GPU.
-- **NERSC env is built and verified** (see "NERSC deployment" below): shared
-  CPU+GPU conda envs, data hydrated to CFS, auto-named kernels that resolve
-  `ROMAN_DISPERSER_DATA` inside notebooks.
-- Intended notebook shape: disperse → save grism FITS → reload → **romanisim
-  wrap**. The wrap step (`romanisim-make-image`) is **NERSC-first** — it needs the
-  large CRDS + STPSF caches (staged on NERSC; impractical on a laptop) and hasn't
-  been exercised end-to-end yet.
-- **RRN deployment is deferred.**
+- Disperser pinned to **v0.10.0** (vendored reference data + `roman-disperser-hydrate`).
+- Notebooks: 00 env check · 01 spectra→counts · 02 disperse a star · 03 mixed
+  field + roll · 04 extraction + 0th-order contamination · 05 PA→line profiles ·
+  06 catalogs + batched dispersion · 07 JAX optical-model tools · 08 GPU
+  scale-out. Committed **without outputs** via an nbstripout git filter
+  (`pixi run setup-nbstripout` once per clone).
+- **NERSC env is built** (see "NERSC deployment"): shared CPU+GPU conda envs,
+  data hydrated to CFS, auto-named kernels that resolve `ROMAN_DISPERSER_DATA`.
+  Confirm the shared envs carry `roman_disperser ≥ 0.10.0` before a NERSC run.
+- **romanisim wrap dropped from the tutorials** (the once-planned disperse→wrap
+  step). romanisim stays bundled in the envs for when wrap content is added back,
+  but is unused by 00–08.
+- **RRN and a standalone GPU notebook dropped:** GPU scale-out is notebook 08,
+  run by re-executing it on a GPU node. Known issue flagged in 06/07: the
+  sky→FPA conversion (`get_fpa_pos`) is currently only correct at Dec = 0.
 
 ## The audience matrix (drives every env decision)
 
-Three **user** runtime contexts:
+Two **user** runtime contexts:
 
 | Context     | Manager                | Platform   | GPU | Installs disperser? |
 |-------------|------------------------|------------|-----|---------------------|
 | NERSC       | conda (shared `$roman`)| linux-64   | yes | no — shared env     |
-| RRN         | conda (shared env)     | linux-64   | no  | no — shared env     |
-| Own laptop  | pip-into-venv/conda    | osx/linux  | no  | yes — git clone     |
+| Own laptop  | venv + pip (or conda)  | osx/linux  | no  | yes — git install   |
 
-**Only the laptop path clones the disperser.** NERSC and RRN both provide a
-curated shared environment with it pre-installed, so they never authenticate.
+**Only the laptop path installs the disperser.** NERSC provides a curated shared
+environment with it pre-installed, so it never authenticates. The laptop default
+is a **venv + `pip install`** of the disperser (`roman_disperser[full]` pulls
+everything the tutorials use); `environment-cpu.yml`/conda is the option for when
+the romanisim wrap returns (it needs conda for `fftw`).
 
 Two **developer** contexts (Nikhil): laptop (osx-arm64, CPU) and a separate
 linux-64 GPU box (CUDA 12).
@@ -49,25 +58,27 @@ linux-64 GPU box (CUDA 12).
 ## Environment strategy
 
 - **Developers use pixi; users do not.** Pixi fights the conda module system
-  and `$HOME` quotas on NERSC/RRN, and is more than a tutorial reader should
-  have to learn. Pixi is a dev-only tool here.
+  and `$HOME` quotas on NERSC, and is more than a tutorial reader should have to
+  learn. Pixi is a dev-only tool here (it also carries a maintainer-only `dev`
+  env with `nbstripout` for the output-stripping git filter).
 - **`pixi.toml`** (dev) is the single source of truth: platforms
   `osx-arm64` + `linux-64`, environments `default` (CPU) and `gpu` (CUDA,
-  linux-64). **Both bundle romanisim**, so the disperse→wrap pipeline runs in
-  one kernel (no kernel switching). One file covers laptop + GPU box.
+  linux-64). **Both still bundle romanisim** — kept for future disperse→wrap
+  content, though the current notebooks (00–08) don't use it. One file covers
+  laptop + GPU box.
 - The disperser is pulled **from git**, not the `../roman_disperser` sibling
   path, so this repo is reproducible off a laptop (GPU box, CI).
 - **The disperser repo is PRIVATE.** Org membership is authorization, not
   authentication — a clone still needs `gh auth login` (HTTPS credential
   helper) or a registered SSH key. This affects only the **laptop** path and
-  the **maintainer pixi solve**; NERSC/RRN use pre-installed shared envs.
-  `docs/SETUP.md` documents `gh auth login` as a laptop prerequisite.
-- **`environment-cpu.yml` / `environment-gpu.yml`** (user) are the two conda
-  specs users build from — **generated** from the pixi envs by
-  `scripts/export-conda-envs.sh` (which rewrites the disperser URL ssh→https
-  and names the conda env). Don't hand-edit; edit `pixi.toml` and rerun.
-  `-cpu` = laptop / RRN / NERSC-CPU; `-gpu` = NERSC-GPU / GPU box. NERSC/RRN
-  shared envs are built from these too.
+  the **maintainer pixi solve**; NERSC uses a pre-installed shared env.
+  `docs/SETUP.md` documents both SSH and `gh auth login` (HTTPS) for the laptop.
+- **`environment-cpu.yml` / `environment-gpu.yml`** (user) are the conda specs —
+  **generated** from the pixi envs by `scripts/export-conda-envs.sh` (which
+  rewrites the disperser URL ssh→https and names the conda env). Don't hand-edit;
+  edit `pixi.toml` and rerun. The **NERSC shared envs** are built from these;
+  laptop users now default to a plain venv + pip (conda is the fallback for the
+  romanisim wrap), so the ymls mainly serve NERSC.
 
 ## The JAX seam (important, easy to get wrong)
 
@@ -103,11 +114,12 @@ env ymls inherit it via the export script — bump it in `pixi.toml` only.
   `$PIXI_PROJECT_ROOT/data` → `./data`. So the **dev pixi env** lands data in
   `tutorials/data` automatically (`pixi run hydrate`); **laptop users** must set
   `ROMAN_DISPERSER_DATA`; **NERSC** already exports it via `.grism_sim_setup`
-  (see "NERSC deployment" below). RRN deferred.
+  (see "NERSC deployment" below).
 - **Jupyter kernels do not inherit your shell env.** `ROMAN_DISPERSER_DATA` must
   be set *for the kernel* — via the `kernel.json` `"env"` block (laptop) or the
-  NERSC `kernel-helper.sh`. Documented in `docs/SETUP.md` §4. This is the most
-  common "works in the terminal, not in the notebook" trap.
+  NERSC `kernel-helper.sh`. Documented in `docs/SETUP.md`. This is the most
+  common "works in the terminal, not in the notebook" trap, and notebook 00
+  checks it from inside the kernel.
 - Hydration mechanics (manifest/lock, `--only`/`--sca`) live in the disperser's
   `INSTALL.md`; tutorials link to it rather than duplicating.
 
@@ -144,9 +156,9 @@ Gotchas:
 ## Validation gate
 
 Local `pixi run check-jax` and a headless `nbconvert --execute` catch gross
-breakage, but **they do not match the curated NERSC/RRN conda envs.** The real
-gate is executing every notebook *on NERSC and RRN in the actual conda env*
-before publishing. A laptop pixi run is necessary, not sufficient.
+breakage, but **they do not match the curated NERSC conda env.** The real gate is
+executing every notebook *on NERSC in the actual conda env* before publishing. A
+laptop run (pixi or venv) is necessary, not sufficient.
 
 ## Files
 
