@@ -128,8 +128,7 @@ distilled from the build (`m4943` is the project):
   `STPSF_PATH`) — runtime only reads. Re-hydrate by overriding
   `ROMAN_DISPERSER_DATA` back to the writable path.
 - **Kernels:** auto-named from `$CONDA_PREFIX`, wrapped in `kernel-helper.sh`
-  (which propagates `ROMAN_DISPERSER_DATA` to notebooks). See
-  `docs/activating_conda_environment.md`.
+  (which propagates `ROMAN_DISPERSER_DATA` to notebooks). See `docs/SETUP.md` §1.
 
 Gotchas:
 - **The `jaxlib cpu*` pin is load-bearing.** conda-forge resolves the CUDA jaxlib
@@ -155,9 +154,8 @@ before publishing. A laptop pixi run is necessary, not sufficient.
   romanisim). Root (not `docs/`).
 - `environment-cpu.yml` / `environment-gpu.yml` — user conda envs, GENERATED
   from `pixi.toml` by `scripts/export-conda-envs.sh`. Root.
-- `docs/SETUP.md` — canonical, standalone user setup (all three contexts).
-- `docs/activating_conda_environment.md` — NERSC kernel/setup specifics;
-  `docs/SETUP.md` links here rather than duplicating.
-- `check_env.sh` — verifies expected env vars (CRDS/STPSF/etc.) are set. Root.
+- `docs/SETUP.md` — canonical, standalone user setup (NERSC + laptop; the NERSC
+  kernel setup is now inline here, not a separate page). The environment check
+  is `notebooks/00_environment_check.ipynb` (replaced the old `check_env.sh`).
 - `README.md`, `CLAUDE.md` — stay at root (README renders on GitHub; CLAUDE.md
   must be at root to be auto-loaded). User prose lives in `docs/`.
