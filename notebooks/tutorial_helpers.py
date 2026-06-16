@@ -98,3 +98,65 @@ def template_to_counts(template_name, mag, sca, order, wl_um=None, band=None,
     sens = load_sensitivity(sca, order, wl_a, sensitivity_dir=sensitivity_dir)
     counts = flam * sens * dlam_a
     return wl_um, counts
+
+
+# ---------------------------------------------------------------------------
+# Minimal 1D spectral extraction (built up by hand in notebook 04). There is no
+# extraction routine in roman_disperser itself; these are teaching helpers.
+# Dispersion runs along the SCA y axis, so we sum cross-dispersion (x) pixels at
+# each wavelength's trace position. Wavelengths are MICRONS throughout.
+# ---------------------------------------------------------------------------
+
+def spectral_trace(optical_payload, xsca, ysca, wl_um):
+    """Trace (x, y) SCA pixel positions (1-indexed) for each wavelength.
+
+    Chains the JAX optical-model transforms sca->fpa->trace->mpa->sca for an
+    undispersed source at ``(xsca, ysca)``.
+    """
+    import jax.numpy as jnp
+    import roman_disperser.optical_model_jax as omj
+
+    wl = jnp.asarray(wl_um)
+    xfpa, yfpa = omj.sca_to_fpa(optical_payload, xsca, ysca)
+    xmpa, ympa = omj.trace_beam(optical_payload, jnp.broadcast_to(xfpa, wl.shape),
+                                jnp.broadcast_to(yfpa, wl.shape), wl)
+    tx, ty = omj.mpa_to_sca(optical_payload, xmpa, ympa)
+    return np.asarray(tx).ravel(), np.asarray(ty).ravel()
+
+
+def dispersion(optical_payload, xsca, ysca, wl_um):
+    """dy/dlambda (pixels per micron) along the trace, via autodiff (jax.grad)."""
+    import jax
+    import jax.numpy as jnp
+    import roman_disperser.optical_model_jax as omj
+
+    def trace_y(wl):
+        wl1 = jnp.atleast_1d(wl)
+        xfpa, yfpa = omj.sca_to_fpa(optical_payload, xsca, ysca)
+        xmpa, ympa = omj.trace_beam(optical_payload, jnp.broadcast_to(xfpa, wl1.shape),
+                                    jnp.broadcast_to(yfpa, wl1.shape), wl1)
+        _, ty = omj.mpa_to_sca(optical_payload, xmpa, ympa)
+        return ty[0]
+
+    grad = jax.jit(jax.vmap(jax.grad(trace_y)))
+    return np.asarray(grad(jnp.asarray(wl_um)))
+
+
+def extract_1d(image, optical_payload, xsca, ysca, wl_um, aperture=10):
+    """Boxcar-extract a 1D spectrum along the trace of a source at (xsca, ysca).
+
+    For each wavelength: find the trace pixel, sum +/- ``aperture`` pixels in the
+    cross-dispersion (x) direction, then scale by ``|dy/dlambda| * dlambda`` to
+    convert counts-per-pixel-row into counts per wavelength bin (same units as
+    the input count-rate spectrum). Returns a NumPy array the length of wl_um.
+    """
+    tx, ty = spectral_trace(optical_payload, xsca, ysca, wl_um)
+    dydl = dispersion(optical_payload, xsca, ysca, wl_um)
+    dlam_um = float(np.diff(np.asarray(wl_um)).mean())
+    raw = np.zeros(len(wl_um))
+    for i in range(len(wl_um)):
+        ix = int(round(float(tx[i]))) - 1     # 1-indexed FITS -> 0-indexed array
+        iy = int(round(float(ty[i]))) - 1
+        if 0 <= ix < image.shape[1] and 0 <= iy < image.shape[0]:
+            raw[i] = image[iy, max(0, ix - aperture):ix + aperture + 1].sum()
+    return raw * np.abs(dydl) * dlam_um
