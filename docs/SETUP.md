@@ -67,13 +67,31 @@ who you are):
 gh auth login          # sets up a git credential helper pip will use
 ```
 
-Create the environment and register a kernel:
+Create the environment. The tutorials need only pip-installable packages
+(`roman_disperser[full]` pulls jax, numpy, scipy, matplotlib, pandas, pyarrow,
+zarr, astropy, synphot), so a **venv is the lightest path** — no conda required.
+
+**Option A — venv + pip (recommended):**
 
 ```bash
-conda env create -f environment-cpu.yml
+python -m venv ~/roman-tut
+source ~/roman-tut/bin/activate
+pip install "roman_disperser[full] @ git+https://github.com/roman-grs-pit/roman_disperser.git@v0.10.0" \
+    jupyterlab ipykernel
+```
+
+**Option B — conda** (use this if you'll also run the romanisim wrap later — it
+needs conda for `fftw`; the current tutorials don't):
+
+```bash
+conda env create -f environment-cpu.yml      # no conda? `brew install micromamba` is the lightest
 conda activate roman-disperser-tutorials
-KNAME=$(basename "$CONDA_PREFIX")
-python -m ipykernel install --user --name "$KNAME" \
+```
+
+Then register a Jupyter kernel (either option):
+
+```bash
+python -m ipykernel install --user --name roman-tutorials \
     --display-name "Roman Disperser Tutorials"
 ```
 
@@ -92,7 +110,7 @@ roman-disperser-hydrate --only catalog                              # source cat
 your shell, so add `ROMAN_DISPERSER_DATA` to the kernel's `kernel.json`:
 
 ```bash
-KJ=~/.local/share/jupyter/kernels/$(basename "$CONDA_PREFIX")/kernel.json
+KJ=~/.local/share/jupyter/kernels/roman-tutorials/kernel.json
 python - "$KJ" <<'PY'
 import json, os, sys
 p = sys.argv[1]; d = json.load(open(p))
