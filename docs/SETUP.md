@@ -60,12 +60,13 @@ hydrated in the shared environment; nothing else to do. Go to §3.
 ## 2. Your own laptop (CPU)
 
 This is the only path that installs the disperser from its **private** GitHub
-repo, so authenticate first (org membership grants access, but you still prove
-who you are):
+repo, so set up GitHub auth first (org membership grants access, but you still
+prove who you are). Two options — pick one and use the matching URL below:
 
-```bash
-gh auth login          # sets up a git credential helper pip will use
-```
+- **SSH** (if your SSH key is registered with GitHub): nothing to set up; use the
+  `git+ssh://git@github.com/...` form of the install URL.
+- **HTTPS**: run `gh auth login`, which installs a git credential helper pip
+  will use; use the `git+https://github.com/...` form.
 
 Create the environment. The tutorials need only pip-installable packages
 (`roman_disperser[full]` pulls jax, numpy, scipy, matplotlib, pandas, pyarrow,
@@ -80,8 +81,11 @@ the same layout the maintainer pixi setup uses.
 ```bash
 python -m venv .venv          # in the repo root; .venv is git-ignored
 source .venv/bin/activate
-pip install "roman_disperser[full] @ git+https://github.com/roman-grs-pit/roman_disperser.git@v0.10.0" \
+# SSH (recommended if your key is on GitHub):
+pip install "roman_disperser[full] @ git+ssh://git@github.com/roman-grs-pit/roman_disperser.git@v0.10.0" \
     jupyterlab ipykernel
+# — or HTTPS (after `gh auth login`):
+#   git+https://github.com/roman-grs-pit/roman_disperser.git@v0.10.0
 ```
 
 **Option B — conda** (use this if you'll also run the romanisim wrap later — it
