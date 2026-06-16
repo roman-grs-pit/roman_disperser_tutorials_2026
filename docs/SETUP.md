@@ -144,9 +144,15 @@ Full hydration details (`--only`, manifests, lock files) are in
 
 ## 3. Verify — run notebook 00
 
-Launch JupyterLab (or open the notebooks in NERSC Jupyter), select the **Roman
-Disperser Tutorials** kernel, and run **`notebooks/00_environment_check.ipynb`**
-top to bottom. It checks the import, the JAX backend, that the *kernel* resolves
+Launch JupyterLab from the repo (on NERSC, use [jupyter.nersc.gov](https://jupyter.nersc.gov)
+instead of running it yourself):
+
+```bash
+jupyter lab          # opens in your browser
+```
+
+Select the **Roman Disperser Tutorials** kernel and run
+**`notebooks/00_environment_check.ipynb`** top to bottom. It checks the import, the JAX backend, that the *kernel* resolves
 the reference data, and a smoke dispersion — all with green ✅ markers. If
 anything is red, fix it here (most often `ROMAN_DISPERSER_DATA` not reaching the
 kernel, §2) before moving on.
