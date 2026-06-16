@@ -1,0 +1,4 @@
+# Strip notebook outputs in what git stores, while leaving your working copy
+# untouched (so you can still view your run results). Activated per clone by
+# `pixi run setup-nbstripout` (configures the git filter; see that task).
+*.ipynb filter=nbstripout diff=ipynb

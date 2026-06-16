@@ -27,3 +27,15 @@ Tutorial notebooks live under `notebooks/` (added incrementally).
 
 Development uses [pixi](https://pixi.sh) — see [CLAUDE.md](CLAUDE.md) for the
 environment strategy and the JAX/CPU/GPU rationale.
+
+Notebooks are committed **without outputs**. After cloning, run once:
+
+```
+pixi run setup-nbstripout
+```
+
+This installs an `nbstripout` git filter (in the maintainer-only `dev` env) that
+strips outputs from what git stores while leaving your working-copy outputs
+intact. The filter config lives in `.git/config`, so it's per-clone; the
+`.gitattributes` mapping is committed. `pixi run clear-nb` is a manual fallback
+that strips outputs from the files in place.

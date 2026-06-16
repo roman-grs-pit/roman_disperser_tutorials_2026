@@ -28,6 +28,12 @@ check-jax = "python -c 'import jax; print(f\"Backend: {jax.default_backend()}\")
 # Hydrate reference data into the dev data dir (PIXI_PROJECT_ROOT/data). Flags
 # pass through, e.g. `pixi run hydrate --only optical_model,sensitivities,synphot`.
 hydrate = "roman-disperser-hydrate"
+# One-time per clone: install the nbstripout git filter (keeps local outputs,
+# strips them only in what git stores). See scripts/setup_nbstripout.sh.
+setup-nbstripout = "bash scripts/setup_nbstripout.sh"
+# Manual fallback: strip outputs from the notebook FILES in place (also clears
+# your working copy). Prefer the git filter above for routine commits.
+clear-nb = "bash scripts/clear_notebook_outputs.sh"
 
 # --- ENVIRONMENTS ---
 # Both envs bundle romanisim (the full disperse -> wrap pipeline), so users
@@ -37,6 +43,10 @@ hydrate = "roman-disperser-hydrate"
 [environments]
 default = ["cpu", "notebook", "romanisim"]
 gpu = ["cuda", "notebook", "romanisim"]
+# Maintainer-only superset: adds authoring tools (nbstripout for the git
+# output-stripping filter). NOT exported to the user conda envs, which are
+# generated from `default`/`gpu` only.
+dev = ["cpu", "notebook", "romanisim", "dev"]
 
 # --- FEATURES ---
 
@@ -75,3 +85,7 @@ fftw = "*"
 crds = ">=13.0.2"
 stpsf = ">=2.1.0"
 romanisim = { git = "https://github.com/spacetelescope/romanisim.git", branch = "main" }
+
+# Maintainer-only authoring tools (see the `dev` environment above).
+[feature.dev.dependencies]
+nbstripout = "*"
