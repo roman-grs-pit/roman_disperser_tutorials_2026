@@ -115,21 +115,27 @@ roman-disperser-hydrate --only catalog                              # source cat
 ```
 
 **Make the data visible to the kernel.** A Jupyter kernel does **not** inherit
-your shell, so add `ROMAN_DISPERSER_DATA` to the kernel's `kernel.json`:
+your shell, so add `ROMAN_DISPERSER_DATA` to the kernel's `kernel.json`. The
+kernel's location is platform-dependent (macOS `~/Library/Jupyter`, Linux
+`~/.local/share/jupyter`), so let Jupyter tell us where it is rather than
+guessing — make sure `ROMAN_DISPERSER_DATA` is still exported, then run:
 
 ```bash
-KJ=~/.local/share/jupyter/kernels/roman-tutorials/kernel.json
-python - "$KJ" <<'PY'
-import json, os, sys
-p = sys.argv[1]; d = json.load(open(p))
+python - <<'PY'
+import json, os
+from jupyter_client.kernelspec import KernelSpecManager
+p = os.path.join(KernelSpecManager().get_kernel_spec("roman-tutorials").resource_dir, "kernel.json")
+d = json.load(open(p))
 d.setdefault("env", {})["ROMAN_DISPERSER_DATA"] = os.environ["ROMAN_DISPERSER_DATA"]
 json.dump(d, open(p, "w"), indent=2)
+print("wired ROMAN_DISPERSER_DATA into", p)
 PY
 ```
 
-(Equivalently, edit `kernel.json` and add `"env": {"ROMAN_DISPERSER_DATA":
-"/your/path"}`.) For GPU on an NVIDIA workstation, add the JAX overlay per the
-INSTALL link above (Apple-silicon laptops are CPU-only).
+(`jupyter kernelspec list` shows the path too, if you'd rather edit
+`kernel.json` by hand and add `"env": {"ROMAN_DISPERSER_DATA": "/your/path"}`.)
+For GPU on an NVIDIA workstation, add the JAX overlay per the INSTALL link above
+(Apple-silicon laptops are CPU-only).
 
 Full hydration details (`--only`, manifests, lock files) are in
 [`roman_disperser/INSTALL.md` → Reference data](https://github.com/roman-grs-pit/roman_disperser/blob/main/INSTALL.md#reference-data).
