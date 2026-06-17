@@ -179,7 +179,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/99/1e/b20400e946d2c31b72e649da8afde26bc4327907be6926f55d1b3f4673a9/asdf_standard-1.5.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/4f/1b/b6696f03e2320509ad9526190061ec7acf62330bddeb639d37a0a77e20a8/asdf_transform_schemas-0.6.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/8e/5f/cd19b53e571853dfd12033f0fb3674e64b8397ff73857e1e09f17943409c/asdf_wcs_schemas-0.5.0-py3-none-any.whl
-      - pypi: https://files.pythonhosted.org/packages/c3/1c/f06ad85180e7dd9855aa5ede901bfc2be858d7bee17d4e978a14c0ecec14/astropy-7.2.0-cp311-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl
+      - pypi: https://files.pythonhosted.org/packages/c2/45/dfe920d041c48c02c4385e9e21408d632a1da61f1c119a3e3b5630b4fde9/astropy-7.2.1-cp311-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/9c/da/baa3dc875e05ef28e7c3c4aa2154a9a965a9814c56ff4ffe201ce52adb85/astropy_healpix-1.1.3-cp310-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/72/23/95a7e2014c645be8fcd2e5dfcf140f8dbd99a6c6782df0060486814b858d/astropy_iers_data-0.2026.6.15.15.33.16-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/e3/ca/944b328f2c60b83896a9223312e21e46cdc1fef57565e853da4544ff6a8e/astroquery-0.4.11-py3-none-any.whl
@@ -237,7 +237,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/6a/23/8146aad7d88f4fcb3a6218f41a60f6c2d4e3a72de72da1825dc7c8f7877c/semantic_version-2.10.0-py2.py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/e8/73/db3468282daf81a550bb409ce2e0756e6b129464c7eee211ba117ba91925/stpsf-2.1.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/22/1e/931750ed450167468590533dac85e71b15445290c9dbd75b8dd3ff667b7c/synphot-1.7.0-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl
-      - pypi: https://files.pythonhosted.org/packages/eb/75/1a0392bcc21c44dcdf87b3cf2d137e7829be2c083a1e38d44efca3d57a16/tqdm-4.68.2-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/d8/8e/bb97bb0c71802080bfc8952937d174e49cfc50de5c951dd47b2496f0dcdb/tqdm-4.68.3-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/88/0a/469e2bd01be1490336e6c8707386845655d59261543315778a3ccc7e8019/zarr-3.2.1-py3-none-any.whl
       osx-arm64:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/_openmp_mutex-4.5-7_kmp_llvm.conda
@@ -406,7 +406,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/99/1e/b20400e946d2c31b72e649da8afde26bc4327907be6926f55d1b3f4673a9/asdf_standard-1.5.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/4f/1b/b6696f03e2320509ad9526190061ec7acf62330bddeb639d37a0a77e20a8/asdf_transform_schemas-0.6.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/8e/5f/cd19b53e571853dfd12033f0fb3674e64b8397ff73857e1e09f17943409c/asdf_wcs_schemas-0.5.0-py3-none-any.whl
-      - pypi: https://files.pythonhosted.org/packages/a6/ba/3418133ba144dfcd1530bca5a6b695f4cdd21a8abaaa2ac4e5450d11b028/astropy-7.2.0-cp311-abi3-macosx_11_0_arm64.whl
+      - pypi: https://files.pythonhosted.org/packages/f5/6c/a12c60e1197f667379fe56aad0755bff1940824a7b0fe0c3e1988f032b47/astropy-7.2.1-cp311-abi3-macosx_11_0_arm64.whl
       - pypi: https://files.pythonhosted.org/packages/88/7a/3fd2ca70e37546cf6c3fd083b77b30d24578243063b95e82ae7489aef293/astropy_healpix-1.1.3-cp310-abi3-macosx_11_0_arm64.whl
       - pypi: https://files.pythonhosted.org/packages/72/23/95a7e2014c645be8fcd2e5dfcf140f8dbd99a6c6782df0060486814b858d/astropy_iers_data-0.2026.6.15.15.33.16-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/e3/ca/944b328f2c60b83896a9223312e21e46cdc1fef57565e853da4544ff6a8e/astroquery-0.4.11-py3-none-any.whl
@@ -461,7 +461,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/6a/23/8146aad7d88f4fcb3a6218f41a60f6c2d4e3a72de72da1825dc7c8f7877c/semantic_version-2.10.0-py2.py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/e8/73/db3468282daf81a550bb409ce2e0756e6b129464c7eee211ba117ba91925/stpsf-2.1.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/42/c2/4f12f4835a6cad09540706b0ae61be2d7a247e451c2674dec68702e2bccb/synphot-1.7.0-cp312-cp312-macosx_11_0_arm64.whl
-      - pypi: https://files.pythonhosted.org/packages/eb/75/1a0392bcc21c44dcdf87b3cf2d137e7829be2c083a1e38d44efca3d57a16/tqdm-4.68.2-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/d8/8e/bb97bb0c71802080bfc8952937d174e49cfc50de5c951dd47b2496f0dcdb/tqdm-4.68.3-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/88/0a/469e2bd01be1490336e6c8707386845655d59261543315778a3ccc7e8019/zarr-3.2.1-py3-none-any.whl
   dev:
     channels:
@@ -1595,6 +1595,156 @@ packages:
   - jinja2>=3.1.3 ; extra == 'docs'
   - sphinxcontrib-globalsubs>=0.1.1 ; extra == 'docs'
   - matplotlib>=3.9.1 ; extra == 'docs'
+  - astropy[recommended] ; extra == 'dev'
+  - astropy[test] ; extra == 'dev'
+  - astropy[docs] ; extra == 'dev'
+  - astropy[typing] ; extra == 'dev'
+  - tox>=4.22.0 ; extra == 'dev-all'
+  - astropy[dev] ; extra == 'dev-all'
+  - astropy[test-all] ; extra == 'dev-all'
+  requires_python: '>=3.11'
+- pypi: https://files.pythonhosted.org/packages/c2/45/dfe920d041c48c02c4385e9e21408d632a1da61f1c119a3e3b5630b4fde9/astropy-7.2.1-cp311-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl
+  name: astropy
+  version: 7.2.1
+  sha256: d51de1f73c544cd94413504daaf890993d9758c7a8ad2a0e3ce6d26911af8856
+  requires_dist:
+  - astropy-iers-data>=0.2026.6.1.17.39.59
+  - numpy>=1.24,<2.7
+  - packaging>=22.0.0
+  - pyerfa>=2.0.1.1
+  - pyyaml>=6.0.0
+  - scipy>=1.9.2 ; extra == 'recommended'
+  - matplotlib>=3.8.0 ; extra == 'recommended'
+  - pyparsing>=2.4.0 ; extra == 'recommended'
+  - narwhals>=1.42.0 ; extra == 'recommended'
+  - ipython>=8.0.0 ; extra == 'ipython'
+  - astropy[ipython] ; extra == 'jupyter'
+  - ipywidgets>=7.7.3 ; extra == 'jupyter'
+  - ipykernel>=6.16.0 ; extra == 'jupyter'
+  - ipydatagrid>=1.1.13 ; extra == 'jupyter'
+  - jupyter-core>=4.11.2 ; extra == 'jupyter'
+  - pandas>=2.0.0 ; extra == 'jupyter'
+  - astropy[recommended] ; extra == 'all'
+  - astropy[ipython] ; extra == 'all'
+  - astropy[jupyter] ; extra == 'all'
+  - certifi>=2022.6.15.1 ; extra == 'all'
+  - dask[dataframe]>=2024.8.0 ; extra == 'all'
+  - h5py>=3.9.0 ; extra == 'all'
+  - pyarrow>=14.0.2 ; extra == 'all'
+  - beautifulsoup4>=4.9.3 ; extra == 'all'
+  - html5lib>=1.1 ; extra == 'all'
+  - bleach>=3.2.1 ; extra == 'all'
+  - sortedcontainers>=2.1.0 ; extra == 'all'
+  - pytz>=2016.10 ; extra == 'all'
+  - jplephem>=2.17.0 ; extra == 'all'
+  - mpmath>=1.2.1 ; extra == 'all'
+  - asdf-astropy>=0.3 ; extra == 'all'
+  - bottleneck>=1.3.3 ; extra == 'all'
+  - fsspec[http]>=2023.4.0 ; extra == 'all'
+  - s3fs>=2023.4.0 ; extra == 'all'
+  - uncompresspy>=0.4.0 ; extra == 'all'
+  - coverage>=6.4.4 ; extra == 'test'
+  - pre-commit>=2.9.3 ; extra == 'test'
+  - pytest>=8.0.0 ; extra == 'test'
+  - pytest-doctestplus>=1.4.0 ; extra == 'test'
+  - pytest-astropy-header>=0.2.1 ; extra == 'test'
+  - pytest-astropy>=0.10.0 ; extra == 'test'
+  - pytest-xdist>=2.5.0 ; extra == 'test'
+  - threadpoolctl>=3.0.0 ; extra == 'test'
+  - astropy[all] ; extra == 'test-all'
+  - astropy[test] ; extra == 'test-all'
+  - objgraph>=3.1.2 ; extra == 'test-all'
+  - skyfield>=1.42.0 ; extra == 'test-all'
+  - sgp4>=2.3 ; extra == 'test-all'
+  - array-api-strict>=1.0 ; extra == 'test-all'
+  - array-api-strict<2.4 ; python_full_version < '3.12' and extra == 'test-all'
+  - numpy-quaddtype>=0.2.2 ; extra == 'test-all'
+  - pandas-stubs>=2.0.0 ; extra == 'typing'
+  - narwhals>=1.42.0 ; extra == 'typing'
+  - astropy[recommended] ; extra == 'docs'
+  - sphinx>=8.2.0,<9 ; extra == 'docs'
+  - sphinx-astropy[confv2]>=1.9.1 ; extra == 'docs'
+  - pytest>=8.0.0 ; extra == 'docs'
+  - sphinx-changelog>=1.2.0 ; extra == 'docs'
+  - sphinx-design>=0.6.1 ; extra == 'docs'
+  - jinja2>=3.1.3 ; extra == 'docs'
+  - sphinxcontrib-globalsubs>=0.1.1 ; extra == 'docs'
+  - matplotlib!=3.9.0 ; extra == 'docs'
+  - astropy[recommended] ; extra == 'dev'
+  - astropy[test] ; extra == 'dev'
+  - astropy[docs] ; extra == 'dev'
+  - astropy[typing] ; extra == 'dev'
+  - tox>=4.22.0 ; extra == 'dev-all'
+  - astropy[dev] ; extra == 'dev-all'
+  - astropy[test-all] ; extra == 'dev-all'
+  requires_python: '>=3.11'
+- pypi: https://files.pythonhosted.org/packages/f5/6c/a12c60e1197f667379fe56aad0755bff1940824a7b0fe0c3e1988f032b47/astropy-7.2.1-cp311-abi3-macosx_11_0_arm64.whl
+  name: astropy
+  version: 7.2.1
+  sha256: e5f0c28ec3ebf47507d9787d96d0790b486d895690f39838b7bfe358da1c6198
+  requires_dist:
+  - astropy-iers-data>=0.2026.6.1.17.39.59
+  - numpy>=1.24,<2.7
+  - packaging>=22.0.0
+  - pyerfa>=2.0.1.1
+  - pyyaml>=6.0.0
+  - scipy>=1.9.2 ; extra == 'recommended'
+  - matplotlib>=3.8.0 ; extra == 'recommended'
+  - pyparsing>=2.4.0 ; extra == 'recommended'
+  - narwhals>=1.42.0 ; extra == 'recommended'
+  - ipython>=8.0.0 ; extra == 'ipython'
+  - astropy[ipython] ; extra == 'jupyter'
+  - ipywidgets>=7.7.3 ; extra == 'jupyter'
+  - ipykernel>=6.16.0 ; extra == 'jupyter'
+  - ipydatagrid>=1.1.13 ; extra == 'jupyter'
+  - jupyter-core>=4.11.2 ; extra == 'jupyter'
+  - pandas>=2.0.0 ; extra == 'jupyter'
+  - astropy[recommended] ; extra == 'all'
+  - astropy[ipython] ; extra == 'all'
+  - astropy[jupyter] ; extra == 'all'
+  - certifi>=2022.6.15.1 ; extra == 'all'
+  - dask[dataframe]>=2024.8.0 ; extra == 'all'
+  - h5py>=3.9.0 ; extra == 'all'
+  - pyarrow>=14.0.2 ; extra == 'all'
+  - beautifulsoup4>=4.9.3 ; extra == 'all'
+  - html5lib>=1.1 ; extra == 'all'
+  - bleach>=3.2.1 ; extra == 'all'
+  - sortedcontainers>=2.1.0 ; extra == 'all'
+  - pytz>=2016.10 ; extra == 'all'
+  - jplephem>=2.17.0 ; extra == 'all'
+  - mpmath>=1.2.1 ; extra == 'all'
+  - asdf-astropy>=0.3 ; extra == 'all'
+  - bottleneck>=1.3.3 ; extra == 'all'
+  - fsspec[http]>=2023.4.0 ; extra == 'all'
+  - s3fs>=2023.4.0 ; extra == 'all'
+  - uncompresspy>=0.4.0 ; extra == 'all'
+  - coverage>=6.4.4 ; extra == 'test'
+  - pre-commit>=2.9.3 ; extra == 'test'
+  - pytest>=8.0.0 ; extra == 'test'
+  - pytest-doctestplus>=1.4.0 ; extra == 'test'
+  - pytest-astropy-header>=0.2.1 ; extra == 'test'
+  - pytest-astropy>=0.10.0 ; extra == 'test'
+  - pytest-xdist>=2.5.0 ; extra == 'test'
+  - threadpoolctl>=3.0.0 ; extra == 'test'
+  - astropy[all] ; extra == 'test-all'
+  - astropy[test] ; extra == 'test-all'
+  - objgraph>=3.1.2 ; extra == 'test-all'
+  - skyfield>=1.42.0 ; extra == 'test-all'
+  - sgp4>=2.3 ; extra == 'test-all'
+  - array-api-strict>=1.0 ; extra == 'test-all'
+  - array-api-strict<2.4 ; python_full_version < '3.12' and extra == 'test-all'
+  - numpy-quaddtype>=0.2.2 ; extra == 'test-all'
+  - pandas-stubs>=2.0.0 ; extra == 'typing'
+  - narwhals>=1.42.0 ; extra == 'typing'
+  - astropy[recommended] ; extra == 'docs'
+  - sphinx>=8.2.0,<9 ; extra == 'docs'
+  - sphinx-astropy[confv2]>=1.9.1 ; extra == 'docs'
+  - pytest>=8.0.0 ; extra == 'docs'
+  - sphinx-changelog>=1.2.0 ; extra == 'docs'
+  - sphinx-design>=0.6.1 ; extra == 'docs'
+  - jinja2>=3.1.3 ; extra == 'docs'
+  - sphinxcontrib-globalsubs>=0.1.1 ; extra == 'docs'
+  - matplotlib!=3.9.0 ; extra == 'docs'
   - astropy[recommended] ; extra == 'dev'
   - astropy[test] ; extra == 'dev'
   - astropy[docs] ; extra == 'dev'
@@ -6378,6 +6528,20 @@ packages:
   - envwrap ; extra == 'telegram'
   - ipywidgets>=6 ; extra == 'notebook'
   requires_python: '>=3.7'
+- pypi: https://files.pythonhosted.org/packages/d8/8e/bb97bb0c71802080bfc8952937d174e49cfc50de5c951dd47b2496f0dcdb/tqdm-4.68.3-py3-none-any.whl
+  name: tqdm
+  version: 4.68.3
+  sha256: 39832cc2def2789a6f29df83f172db7416cea70052c0907a57801c5f2fdccb03
+  requires_dist:
+  - colorama ; sys_platform == 'win32'
+  - requests ; extra == 'discord'
+  - envwrap ; extra == 'discord'
+  - slack-sdk ; extra == 'slack'
+  - envwrap ; extra == 'slack'
+  - requests ; extra == 'telegram'
+  - envwrap ; extra == 'telegram'
+  - ipywidgets>=6 ; extra == 'notebook'
+  requires_python: '>=3.8'
 - conda: https://conda.anaconda.org/conda-forge/noarch/traitlets-5.15.1-pyhcf101f3_0.conda
   sha256: b89a823edf524956b94a2a4db974866e4501f05c68976eff458c5dcf07f88431
   md5: 37e3be7b6e2977d37b8fa5da229f5dc0
