@@ -160,6 +160,29 @@ breakage, but **they do not match the curated NERSC conda env.** The real gate i
 executing every notebook *on NERSC in the actual conda env* before publishing. A
 laptop run (pixi or venv) is necessary, not sufficient.
 
+## Notebook authoring
+
+- **Layout.** The intro sequence `00–08` stays flat in `notebooks/`. More
+  advanced / validation material goes in `notebooks/advanced/` and
+  `notebooks/validation/` (created lazily, as content arrives). A subdir notebook
+  reaches the shared `tutorial_helpers.py` (which lives in `notebooks/`) via a
+  small walk-up-one-level `sys.path` shim at the top of the notebook.
+- **Markdown style: one line per paragraph.** Do **not** hard-wrap prose inside a
+  markdown cell — the JupyterLab renderer turns mid-paragraph newlines into line
+  breaks, producing false paragraphs. Write each paragraph as a single line,
+  separate paragraphs with a blank line, put each list item on its own line, and
+  keep `$$…$$` display math on its own line. The `00–08` notebooks are the
+  reference for this style.
+- **Outputs are stripped in git** by the `*.ipynb` nbstripout filter
+  (`pixi run setup-nbstripout` once per clone); your working copy keeps run
+  outputs. Author by executing locally (`nbconvert --execute --inplace`), then
+  let the filter strip on commit.
+- **The `.ipynb` is the source of truth.** It's fine to author a notebook from a
+  throwaway Python/nbformat builder, but don't commit the builder — it's scratch.
+  If you do build programmatically, route markdown cells through a `reflow()`-style
+  pass so they obey the one-line-per-paragraph rule above, and re-execute the
+  notebook afterwards to repopulate the (working-copy) outputs.
+
 ## Files
 
 - `pixi.toml` — dev environment + single source of truth (CPU + gpu, both with
