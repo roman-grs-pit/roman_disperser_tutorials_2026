@@ -162,6 +162,12 @@ laptop run (pixi or venv) is necessary, not sufficient.
 
 ## Notebook authoring
 
+- **Audience: graduate students and professional astronomers.** Pitch the prose
+  accordingly — assume fluency in the physics and astronomy. Don't define basic
+  quantities (flux, magnitude, redshift, PSF, FWHM, dispersion, …) or belabour
+  standard reasoning; explain what's specific to the disperser, the GRS setup, or
+  a non-obvious numerical/code choice. Keep it concise and unpatronising; depth
+  belongs on the parts a peer wouldn't already know.
 - **Layout.** The intro sequence `00–08` stays flat in `notebooks/`. More
   advanced / validation material goes in `notebooks/advanced/` and
   `notebooks/validation/` (created lazily, as content arrives). A subdir notebook
