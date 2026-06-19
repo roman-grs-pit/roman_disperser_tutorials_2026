@@ -185,7 +185,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/e3/ca/944b328f2c60b83896a9223312e21e46cdc1fef57565e853da4544ff6a8e/astroquery-0.4.11-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/01/b1/1a3c4e436ad8a4c4ba3e70f4c62e1f927cbbb3c943a9bba5813b8b815bde/cachebox-5.2.3-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/cc/8f/ec6289987824b29529d0dfda0d74a07cec60e54b9c92f3c9da4c0ac732de/contourpy-1.3.3-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl
-      - pypi: https://files.pythonhosted.org/packages/f3/e7/8ab5d36c29e544f7ac53a13d95ad64afe1156aad58a39dfc560cc53d6cad/crds-13.2.4-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/c0/b9/ada6b43945d1d93ba42142094982ce95177d248e2c68cca662579a74a230/crds-13.2.5-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/20/2c/0622f20ff02b2ef32558733443805dc82fd4c275be01b2d19d14676f3a1b/cryptography-49.0.0-cp311-abi3-manylinux_2_28_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/e7/05/c19819d5e3d95294a6f5947fb9b9629efb316b96de511b418c53d245aae6/cycler-0.12.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/c7/26/4a2bad8eb430d8d805a4642c4bff25103a37548d74ab346f8b1e024abcc5/deepdiff-9.1.0-py3-none-any.whl
@@ -226,7 +226,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/e5/e0/050018d855d26d3c0b4a7d1b2ed692be758ce276d8289e2a2b44ba1014a5/pyerfa-2.0.1.5-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/10/bd/c038d7cc38edc1aa5bf91ab8068b63d4308c66c4c8bb3cbba7dfbc049f9c/pyparsing-3.3.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/ed/d6/fb079396f136ce88fb39f87553f947597b08f1bb4b1be4e0d684dd91fcb0/pysiaf-0.26.0-py3-none-any.whl
-      - pypi: https://files.pythonhosted.org/packages/8b/5a/ba30a81239b909821b3153e303e7def45178bf353da4f72380e6c5e8793b/pytest-9.1.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/24/25/1de2678b631f5a49215c6c96fff41ba892b0a34df68d6d80292b1b48aa7f/pytest-9.1.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/ec/dd/96da98f892250475bdf2328112d7468abdd4acc7b902b6af23f4ed958ea0/pytz-2026.2-py2.py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/0a/09/04ff6e8beaa6cd60a960f925d837c2afa3fffba7860042ab1b52a8358297/pyvo-1.9.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/e0/2e/5bca06d74ca96b5d44585dfbdec7ab13dc9de6a2f9ccd5edaa2b7e3634aa/rad-1.0.0-py3-none-any.whl
@@ -412,7 +412,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/e3/ca/944b328f2c60b83896a9223312e21e46cdc1fef57565e853da4544ff6a8e/astroquery-0.4.11-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/3a/79/89e4423352d0ca33bbf80fc1b4b665e654a93de8b16cf41e96fcac81801a/cachebox-5.2.3-cp312-cp312-macosx_11_0_arm64.whl
       - pypi: https://files.pythonhosted.org/packages/53/3e/405b59cfa13021a56bba395a6b3aca8cec012b45bf177b0eaf7a202cde2c/contourpy-1.3.3-cp312-cp312-macosx_11_0_arm64.whl
-      - pypi: https://files.pythonhosted.org/packages/f3/e7/8ab5d36c29e544f7ac53a13d95ad64afe1156aad58a39dfc560cc53d6cad/crds-13.2.4-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/c0/b9/ada6b43945d1d93ba42142094982ce95177d248e2c68cca662579a74a230/crds-13.2.5-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/e7/05/c19819d5e3d95294a6f5947fb9b9629efb316b96de511b418c53d245aae6/cycler-0.12.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/c7/26/4a2bad8eb430d8d805a4642c4bff25103a37548d74ab346f8b1e024abcc5/deepdiff-9.1.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/0c/d5/c5db1ea3394c6e1732fb3286b3bd878b59507a8f77d32a2cebda7d7b7cd4/donfig-0.8.1.post1-py3-none-any.whl
@@ -451,7 +451,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/11/4a/31a363370478b63c6289a34743f2ba2d3ae1bd8223e004d18ab28fb92385/pyerfa-2.0.1.5-cp39-abi3-macosx_11_0_arm64.whl
       - pypi: https://files.pythonhosted.org/packages/10/bd/c038d7cc38edc1aa5bf91ab8068b63d4308c66c4c8bb3cbba7dfbc049f9c/pyparsing-3.3.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/ed/d6/fb079396f136ce88fb39f87553f947597b08f1bb4b1be4e0d684dd91fcb0/pysiaf-0.26.0-py3-none-any.whl
-      - pypi: https://files.pythonhosted.org/packages/8b/5a/ba30a81239b909821b3153e303e7def45178bf353da4f72380e6c5e8793b/pytest-9.1.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/24/25/1de2678b631f5a49215c6c96fff41ba892b0a34df68d6d80292b1b48aa7f/pytest-9.1.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/ec/dd/96da98f892250475bdf2328112d7468abdd4acc7b902b6af23f4ed958ea0/pytz-2026.2-py2.py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/0a/09/04ff6e8beaa6cd60a960f925d837c2afa3fffba7860042ab1b52a8358297/pyvo-1.9.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/e0/2e/5bca06d74ca96b5d44585dfbdec7ab13dc9de6a2f9ccd5edaa2b7e3634aa/rad-1.0.0-py3-none-any.whl
@@ -2234,6 +2234,40 @@ packages:
   - helm ; extra == 'dev'
   - mock ; extra == 'test'
   - pytest>=6.0 ; extra == 'test'
+  - pytest-astropy ; extra == 'test'
+  - pytest-doctestplus>=0.10.0 ; extra == 'test'
+  - stsynphot ; extra == 'test'
+  - stdatamodels ; extra == 'test'
+  - sphinx ; extra == 'docs'
+  - sphinx-rtd-theme ; extra == 'docs'
+  - docutils ; extra == 'docs'
+  - sphinx-automodapi ; extra == 'docs'
+  - sphinx-tabs ; extra == 'docs'
+  - sphinx-copybutton ; extra == 'docs'
+  - boto3 ; extra == 'aws'
+  - awscli ; extra == 'aws'
+  - stsynphot ; extra == 'synphot'
+  requires_python: '>=3.7'
+- pypi: https://files.pythonhosted.org/packages/c0/b9/ada6b43945d1d93ba42142094982ce95177d248e2c68cca662579a74a230/crds-13.2.5-py3-none-any.whl
+  name: crds
+  version: 13.2.5
+  sha256: d00f7cf69b5dc8ab143cc7a3db7c0dc8e4af2df3dc384d564762b279f58a74df
+  requires_dist:
+  - astropy
+  - numpy
+  - filelock
+  - asdf!=3.0.0
+  - requests
+  - parsley
+  - jwst ; extra == 'jwst'
+  - roman-datamodels ; extra == 'roman'
+  - bs4 ; extra == 'submission'
+  - ipython ; extra == 'dev'
+  - jupyterlab ; extra == 'dev'
+  - ansible ; extra == 'dev'
+  - helm ; extra == 'dev'
+  - mock ; extra == 'test'
+  - pytest>=9.0 ; extra == 'test'
   - pytest-astropy ; extra == 'test'
   - pytest-doctestplus>=0.10.0 ; extra == 'test'
   - stsynphot ; extra == 'test'
@@ -5661,6 +5695,26 @@ packages:
   name: pytest
   version: 9.1.0
   sha256: 8ebb0e7888bdf2bdfc602ec51f8f62d50200af37356c74e503c79a94f5c81f32
+  requires_dist:
+  - colorama>=0.4 ; sys_platform == 'win32'
+  - exceptiongroup>=1 ; python_full_version < '3.11'
+  - iniconfig>=1.0.1
+  - packaging>=22
+  - pluggy>=1.5,<2
+  - pygments>=2.7.2
+  - tomli>=1 ; python_full_version < '3.11'
+  - argcomplete ; extra == 'dev'
+  - attrs>=19.2 ; extra == 'dev'
+  - hypothesis>=3.56 ; extra == 'dev'
+  - mock ; extra == 'dev'
+  - requests ; extra == 'dev'
+  - setuptools ; extra == 'dev'
+  - xmlschema ; extra == 'dev'
+  requires_python: '>=3.10'
+- pypi: https://files.pythonhosted.org/packages/24/25/1de2678b631f5a49215c6c96fff41ba892b0a34df68d6d80292b1b48aa7f/pytest-9.1.1-py3-none-any.whl
+  name: pytest
+  version: 9.1.1
+  sha256: 37a86b45efb9a47a61a36449063e8e18d0cab3161329fc099eb21783169c4f0c
   requires_dist:
   - colorama>=0.4 ; sys_platform == 'win32'
   - exceptiongroup>=1 ; python_full_version < '3.11'
