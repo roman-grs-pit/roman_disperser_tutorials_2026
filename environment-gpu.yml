@@ -1,5 +1,5 @@
 # GENERATED from pixi.toml by scripts/export-conda-envs.sh — do not edit by hand.
-# Roman Disperser tutorials, GPU/CUDA (NERSC-GPU / GPU box). Includes romanisim.
+# Roman Disperser tutorials, GPU/CUDA. Includes romanisim.
 # Build on a linux-64 + CUDA host. See docs/SETUP.md.
 name: roman-disperser-tutorials-gpu
 channels:

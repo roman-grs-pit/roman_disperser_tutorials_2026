@@ -24,8 +24,7 @@ v0.10→v0.14.2 update rewrote the API touchpoints (elements threading, new
 (fixed upstream in v0.12.0 by the exact gnomonic projection — notebook 07 now
 *demonstrates* the removed flat-sky error), and added notebook 09 (the prism)
 plus `MIGRATION.md` (what changed for tutorial users; links to the disperser's
-own migration guide). A NERSC run-through — the real shared-env gate, and the
-only place the GPU notebook runs at scale — is still pending.
+own migration guide).
 
 - Disperser pinned to **v0.14.2** (elements API, prism support, lock-resolved
   reference data via `roman-disperser-hydrate`).
@@ -34,41 +33,35 @@ only place the GPU notebook runs at scale — is still pending.
   06 catalogs + batched dispersion · 07 JAX optical-model tools · 08 GPU
   scale-out · 09 the prism. Committed **without outputs** via an nbstripout git
   filter (`pixi run setup-nbstripout` once per clone).
-- **NERSC env is built** (see "NERSC deployment"): shared CPU+GPU conda envs,
-  data hydrated to CFS, auto-named kernels that resolve `ROMAN_DISPERSER_DATA`.
-  The shared envs predate v0.14.2 — they must be **rebuilt from the updated
-  ymls** (and the CFS data re-hydrated, which also fetches the prism assets)
-  before the next NERSC run.
+- **NERSC deployment dropped (2026-08-08).** The shared-env recipes existed for
+  a one-off onboarding session and are no longer maintained; the repo is
+  standalone (own-machine setup only). The historical NERSC build notes live in
+  git history (pre-`update-v0.14.2` CLAUDE.md/SETUP.md) if ever needed again.
 - **romanisim wrap dropped from the tutorials** (the once-planned disperse→wrap
   step). romanisim stays bundled in the envs for when wrap content is added back,
   but is unused by 00–09.
 - **RRN and a standalone GPU notebook dropped:** GPU scale-out is notebook 08,
   run by re-executing it on a GPU node.
 
-## The audience matrix (drives every env decision)
+## The audience (drives every env decision)
 
-Two **user** runtime contexts:
-
-| Context     | Manager                | Platform   | GPU | Installs disperser? |
-|-------------|------------------------|------------|-----|---------------------|
-| NERSC       | conda (shared `$roman`)| linux-64   | yes | no — shared env     |
-| Own laptop  | venv + pip (or conda)  | osx/linux  | no  | yes — git install   |
-
-**Only the laptop path installs the disperser.** NERSC provides a curated shared
-environment with it pre-installed, so it never authenticates. The laptop default
-is a **venv + `pip install`** of the disperser (`roman_disperser[full]` pulls
-everything the tutorials use); `environment-cpu.yml`/conda is the option for when
-the romanisim wrap returns (it needs conda for `fftw`).
+One **user** runtime context: your own machine (laptop or workstation,
+osx/linux, GPU optional). The default is a **venv + `pip install`** of the
+disperser (`roman_disperser[full]` pulls everything the tutorials use);
+`environment-cpu.yml`/conda is the option for when the romanisim wrap returns
+(it needs conda for `fftw`). The repo is deliberately **standalone** — no
+shared-facility deployment is assumed or maintained.
 
 Two **developer** contexts (Nikhil): laptop (osx-arm64, CPU) and a separate
 linux-64 GPU box (CUDA 12).
 
 ## Environment strategy
 
-- **Developers use pixi; users do not.** Pixi fights the conda module system
-  and `$HOME` quotas on NERSC, and is more than a tutorial reader should have to
-  learn. Pixi is a dev-only tool here (it also carries a maintainer-only `dev`
-  env with `nbstripout` for the output-stripping git filter).
+- **Developers use pixi; users do not.** Pixi is more than a tutorial reader
+  should have to learn — users get a plain venv (or conda) path in
+  `docs/SETUP.md`. Pixi is a dev-only tool here (it also carries a
+  maintainer-only `dev` env with `nbstripout` for the output-stripping git
+  filter).
 - **`pixi.toml`** (dev) is the single source of truth: platforms
   `osx-arm64` + `linux-64`, environments `default` (CPU) and `gpu` (CUDA,
   linux-64). **Both still bundle romanisim** — kept for future disperse→wrap
@@ -83,10 +76,9 @@ linux-64 GPU box (CUDA 12).
   requirement is gone.)
 - **`environment-cpu.yml` / `environment-gpu.yml`** (user) are the conda specs —
   **generated** from the pixi envs by `scripts/export-conda-envs.sh` (which
-  rewrites the disperser URL ssh→https and names the conda env). Don't hand-edit;
-  edit `pixi.toml` and rerun. The **NERSC shared envs** are built from these;
-  laptop users now default to a plain venv + pip (conda is the fallback for the
-  romanisim wrap), so the ymls mainly serve NERSC.
+  names the conda env). Don't hand-edit; edit `pixi.toml` and rerun. Users
+  default to a plain venv + pip; the ymls serve the conda fallback (needed once
+  the romanisim wrap returns, for `fftw`).
 
 ## The JAX seam (important, easy to get wrong)
 
@@ -103,10 +95,10 @@ Consequences, and the reason JAX is **never pinned** in this repo's env files:
   arrives via `roman_disperser`; GPU users then run
   `pip install jax[cuda12-local]` (or `[cuda12]`) themselves.
 - Each env yml pins its backend build explicitly: `-gpu` carries
-  `jaxlib cuda12*`, `-cpu` carries `jaxlib cpu*`. The `-cpu` pin matters on
-  NERSC: conda-forge resolves the CUDA jaxlib if the env is *built* on a GPU
-  host (the `__cuda` virtual package), so without it the "CPU" env grabs the
-  GPU and OOMs on a shared login node.
+  `jaxlib cuda12*`, `-cpu` carries `jaxlib cpu*`. The `-cpu` pin matters
+  whenever the env is *built* on a GPU host: conda-forge resolves the CUDA
+  jaxlib there (the `__cuda` virtual package), so without the pin the "CPU"
+  env grabs the GPU.
 - **Single source of truth for the JAX-flavor choice is
   `roman_disperser/INSTALL.md`.** Tutorials *link* to it; do not duplicate the
   `cuda12-local` vs `cuda12` decision here — a second copy will drift.
@@ -123,52 +115,22 @@ hydrate now fetches **both elements'** assets (grism + prism, ~6.4 GB).
 
 - **Data resolution** (disperser side): `$ROMAN_DISPERSER_DATA` →
   `$PIXI_PROJECT_ROOT/data` → `./data`. So the **dev pixi env** lands data in
-  `tutorials/data` automatically (`pixi run hydrate`); **laptop users** must set
-  `ROMAN_DISPERSER_DATA`; **NERSC** already exports it via `.grism_sim_setup`
-  (see "NERSC deployment" below).
+  `tutorials/data` automatically (`pixi run hydrate`); **users** must set
+  `ROMAN_DISPERSER_DATA`.
 - **Jupyter kernels do not inherit your shell env.** `ROMAN_DISPERSER_DATA` must
-  be set *for the kernel* — via the `kernel.json` `"env"` block (laptop) or the
-  NERSC `kernel-helper.sh`. Documented in `docs/SETUP.md`. This is the most
-  common "works in the terminal, not in the notebook" trap, and notebook 00
-  checks it from inside the kernel.
+  be set *for the kernel* — via the `kernel.json` `"env"` block. Documented in
+  `docs/SETUP.md`. This is the most common "works in the terminal, not in the
+  notebook" trap, and notebook 00 checks it from inside the kernel.
 - Hydration mechanics (manifest/lock, `--only`/`--sca`) live in the disperser's
   `INSTALL.md`; tutorials link to it rather than duplicating.
 
-## NERSC deployment (maintainer)
-
-The shared NERSC envs are built from the generated ymls. Key facts + gotchas,
-distilled from the build (`m4943` is the project):
-
-- **Envs:** `/global/common/software/m4943/envs/roman-tutorials-{cpu,gpu}`, built
-  with `mamba env create -f environment-{cpu,gpu}.yml -p <prefix>`. Prereqs:
-  `CONDA_PKGS_DIRS=$SCRATCH/conda-pkgs` (keep the pkg cache off `$HOME`),
-  `chmod -R g+rX` for group read. Build on a login node — no GPU needed to *build*.
-- **`.grism_sim_setup`** exports `tutorial_2026_cpu` / `tutorial_2026_gpu` (env
-  paths; users `conda activate $tutorial_2026_gpu`) and `ROMAN_DISPERSER_DATA`.
-- **Data:** hydrated to `/global/cfs/cdirs/m4943/grismsim/roman-disperser-data`
-  (writable); users/kernels read the **`/dvs_ro`** mirror (read-only, like
-  `STPSF_PATH`) — runtime only reads. Re-hydrate by overriding
-  `ROMAN_DISPERSER_DATA` back to the writable path.
-- **Kernels:** auto-named from `$CONDA_PREFIX`, wrapped in `kernel-helper.sh`
-  (which propagates `ROMAN_DISPERSER_DATA` to notebooks). See `docs/SETUP.md` §1.
-
-Gotchas:
-- **The `jaxlib cpu*` pin is load-bearing.** conda-forge resolves the CUDA jaxlib
-  when an env is *built* on a GPU host (the `__cuda` virtual package), so without
-  the pin the "CPU" env grabs the shared login GPU and OOMs. Pinned in
-  `pixi.toml`'s cpu feature → flows to `environment-cpu.yml`.
-- **GPU is only verifiable on a GPU *compute* node** (`salloc -C gpu`); the login
-  GPU is shared and OOMs regardless of env.
-- The pkg cache on `$SCRATCH` is a different filesystem from the CFS env prefix,
-  so conda *copies* (no hardlinks) → envs are self-contained and the scratch
-  auto-purge can't break them.
-
 ## Validation gate
 
-Local `pixi run check-jax` and a headless `nbconvert --execute` catch gross
-breakage, but **they do not match the curated NERSC conda env.** The real gate is
-executing every notebook *on NERSC in the actual conda env* before publishing. A
-laptop run (pixi or venv) is necessary, not sufficient.
+`pixi run check-jax` and a headless `nbconvert --execute` in the dev pixi env
+catch gross breakage, but the dev env is not what users build. The gate before
+publishing is executing every notebook in a **clean user-style environment**
+(venv + pip, or conda from the generated ymls) — the user path is what has to
+work.
 
 ## Notebook authoring
 
@@ -205,8 +167,8 @@ laptop run (pixi or venv) is necessary, not sufficient.
   romanisim). Root (not `docs/`).
 - `environment-cpu.yml` / `environment-gpu.yml` — user conda envs, GENERATED
   from `pixi.toml` by `scripts/export-conda-envs.sh`. Root.
-- `docs/SETUP.md` — canonical, standalone user setup (NERSC + laptop; the NERSC
-  kernel setup is now inline here, not a separate page). The environment check
-  is `notebooks/00_environment_check.ipynb` (replaced the old `check_env.sh`).
+- `docs/SETUP.md` — canonical, standalone user setup (own machine: venv or
+  conda). The environment check is `notebooks/00_environment_check.ipynb`
+  (replaced the old `check_env.sh`).
 - `README.md`, `CLAUDE.md` — stay at root (README renders on GitHub; CLAUDE.md
   must be at root to be auto-loaded). User prose lives in `docs/`.

@@ -25,12 +25,12 @@ gen() {  # <pixi-env> <out.yml> <conda-name> <blurb>
 
 gen default environment-cpu.yml roman-disperser-tutorials \
 '# GENERATED from pixi.toml by scripts/export-conda-envs.sh — do not edit by hand.
-# Roman Disperser tutorials, CPU (laptop / RRN / NERSC-CPU). Includes romanisim.
+# Roman Disperser tutorials, CPU. Includes romanisim.
 # romanisim wrapping also needs CRDS/STPSF data (heavy) — see docs/SETUP.md.'
 
 gen gpu environment-gpu.yml roman-disperser-tutorials-gpu \
 '# GENERATED from pixi.toml by scripts/export-conda-envs.sh — do not edit by hand.
-# Roman Disperser tutorials, GPU/CUDA (NERSC-GPU / GPU box). Includes romanisim.
+# Roman Disperser tutorials, GPU/CUDA. Includes romanisim.
 # Build on a linux-64 + CUDA host. See docs/SETUP.md.'
 
 echo "Wrote environment-cpu.yml and environment-gpu.yml"

@@ -3,9 +3,8 @@
 Tutorial notebooks, markdowns, and supporting material for the Roman GRS PIT's
 [Roman Disperser](https://github.com/roman-grs-pit/roman_disperser) tool.
 
-These tutorials are meant to be **self-contained**: you can work through them
-from a NERSC allocation or your own laptop, whether or not you attended a live
-session.
+These tutorials are meant to be **standalone**: you can work through them on
+your own laptop or workstation, whether or not you attended a live session.
 
 The tutorials track `roman_disperser` **v0.14.2**, which supports both WFI
 dispersing elements (G150 grism and P127 prism) through the elements API. If
@@ -14,12 +13,9 @@ the API and some simulated numbers changed.
 
 ## Getting started
 
-See **[docs/SETUP.md](docs/SETUP.md)** for environment setup. In short:
-
-- **NERSC** — activate the curated shared conda environment (built from
-  `environment-gpu.yml` / `environment-cpu.yml`).
-- **Laptop** (CPU) — a `venv` + `pip install` of the disperser (conda
-  optional). The disperser repo is public, so no GitHub auth is needed.
+See **[docs/SETUP.md](docs/SETUP.md)** for environment setup. In short: a
+`venv` + `pip install` of the disperser (conda optional; the disperser repo is
+public, so no GitHub auth is needed), then hydrate the reference data.
 
 The same notebooks run on CPU or GPU; only the JAX build differs. Then run
 `notebooks/00_environment_check.ipynb` to confirm your setup.

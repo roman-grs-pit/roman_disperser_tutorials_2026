@@ -1,10 +1,10 @@
 # Setup
 
 These tutorials use the [`roman_disperser`](https://github.com/roman-grs-pit/roman_disperser)
-library. Pick the path that matches where you're running; both end the same way:
-a Jupyter kernel that can `import roman_disperser` and find its reference data.
-When you're set up, **notebook `00_environment_check.ipynb` verifies everything**
-— run it first.
+library and are **standalone**: everything below runs on your own machine, and
+ends the same way — a Jupyter kernel that can `import roman_disperser` and find
+its reference data. When you're set up, **notebook
+`00_environment_check.ipynb` verifies everything** — run it first.
 
 > **One JAX rule for everyone:** `roman_disperser` is JAX-based. The notebooks
 > run on **CPU or GPU with no code changes** — only the install differs. A CPU
@@ -13,53 +13,12 @@ When you're set up, **notebook `00_environment_check.ipynb` verifies everything*
 > [`roman_disperser/INSTALL.md` → GPU support](https://github.com/roman-grs-pit/roman_disperser/blob/main/INSTALL.md#gpu-support).
 > Don't pin JAX yourself — let the disperser pull the floor, then overlay GPU.
 
-On **NERSC you don't install anything** — a shared environment is already built.
-Only **laptop** users install the library themselves.
-
 ---
 
-## 1. NERSC
+## 1. Set up the environment
 
-Curated shared environments already exist (`tutorial_2026_cpu` /
-`tutorial_2026_gpu`); don't build your own. `.grism_sim_setup` exports their
-paths and `ROMAN_DISPERSER_DATA` (the shared, read-only reference data).
-
-**Activate (shell):**
-
-```bash
-source /global/common/software/m4943/.grism_sim_setup
-module load conda
-conda activate $tutorial_2026_cpu     # or $tutorial_2026_gpu on a GPU node
-```
-
-**Register the notebook kernels (once per user).** This installs both kernels,
-names them from the active env, and wraps each in `kernel-helper.sh`, which
-carries `ROMAN_DISPERSER_DATA` into notebooks — so data resolution is automatic
-in shells *and* kernels:
-
-```bash
-source /global/common/software/m4943/.grism_sim_setup
-module load conda
-for V in cpu gpu; do
-    envvar="tutorial_2026_$V"; conda activate "${!envvar}"
-    KNAME=$(basename "$CONDA_PREFIX")                       # roman-tutorials-cpu / -gpu
-    python -m ipykernel install --user --name "$KNAME" \
-        --display-name "Roman Disperser Tutorials ($V)"
-    sed -i '/"argv": \[/a\  "/global/common/software/m4943/kernel-helper.sh",' \
-        "$HOME/.local/share/jupyter/kernels/$KNAME/kernel.json"
-done
-```
-
-In the Jupyter launcher you'll see **Roman Disperser Tutorials (cpu)** and
-**(gpu)** — use the GPU kernel only in a GPU-node session. The data is already
-hydrated in the shared environment; nothing else to do. Go to §3.
-
----
-
-## 2. Your own laptop (CPU)
-
-This is the only path that installs the disperser yourself. The disperser repo
-is **public**, so a plain `git+https://` install URL works with no GitHub auth.
+The disperser repo is **public**, so a plain `git+https://` install URL works
+with no GitHub auth.
 
 Create the environment. The tutorials need only pip-installable packages
 (`roman_disperser[full]` pulls jax, numpy, scipy, matplotlib, pandas, pyarrow,
@@ -138,20 +97,20 @@ Full hydration details (`--only`, manifests, lock files) are in
 
 ---
 
-## 3. Verify — run notebook 00
+## 2. Verify — run notebook 00
 
-Launch JupyterLab from the repo (on NERSC, use [jupyter.nersc.gov](https://jupyter.nersc.gov)
-instead of running it yourself):
+Launch JupyterLab from the repo:
 
 ```bash
 jupyter lab          # opens in your browser
 ```
 
 Select the **Roman Disperser Tutorials** kernel and run
-**`notebooks/00_environment_check.ipynb`** top to bottom. It checks the import, the JAX backend, that the *kernel* resolves
-the reference data, and a smoke dispersion — all with green ✅ markers. If
-anything is red, fix it here (most often `ROMAN_DISPERSER_DATA` not reaching the
-kernel, §2) before moving on.
+**`notebooks/00_environment_check.ipynb`** top to bottom. It checks the
+import, the JAX backend, that the *kernel* resolves the reference data, and a
+smoke dispersion — all with green ✅ markers. If anything is red, fix it here
+(most often `ROMAN_DISPERSER_DATA` not reaching the kernel, §1) before moving
+on.
 
 ---
 
@@ -165,8 +124,8 @@ pixi shell -e gpu      # linux GPU box
 pixi run check-jax     # confirm the live backend
 ```
 
-Notebooks are committed
-**without outputs** via an `nbstripout` git filter — run `pixi run
-setup-nbstripout` once per clone. Local runs catch gross breakage but **do not**
-match the curated NERSC conda env; execute every notebook on NERSC in the real
-environment before publishing. See [CLAUDE.md](../CLAUDE.md) for the rationale.
+Notebooks are committed **without outputs** via an `nbstripout` git filter —
+run `pixi run setup-nbstripout` once per clone. Before publishing, execute
+every notebook in a clean user-style environment (venv or conda from the
+generated ymls), not only the pixi dev env — the user path is what has to
+work. See [CLAUDE.md](../CLAUDE.md) for the rationale.
