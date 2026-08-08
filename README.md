@@ -7,6 +7,11 @@ These tutorials are meant to be **self-contained**: you can work through them
 from a NERSC allocation or your own laptop, whether or not you attended a live
 session.
 
+The tutorials track `roman_disperser` **v0.14.2**, which supports both WFI
+dispersing elements (G150 grism and P127 prism) through the elements API. If
+you last ran them against v0.10, read **[MIGRATION.md](MIGRATION.md)** — both
+the API and some simulated numbers changed.
+
 ## Getting started
 
 See **[docs/SETUP.md](docs/SETUP.md)** for environment setup. In short:
@@ -34,6 +39,7 @@ Work through `notebooks/` in order:
 | 06 | `06_catalogs_scaling`     | Catalog-driven fields and batched dispersion |
 | 07 | `07_jax_optical_model`    | The differentiable optical model under the hood |
 | 08 | `08_gpu_scale_out`        | A full-density, all-orders field at GPU scale |
+| 09 | `09_prism`                | The P127 prism: same pipeline, second dispersing element |
 
 ## For maintainers
 

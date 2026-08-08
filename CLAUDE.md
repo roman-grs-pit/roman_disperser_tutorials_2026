@@ -14,28 +14,36 @@ environment glue, and a self-contained setup path.
 tutorial should be able to set up an environment and run everything from the
 docs alone. Don't assume the reader was in the room.
 
-## Status (2026-06-16)
+## Status (2026-08-08)
 
-**Tutorial notebooks 00–08 are written, executed, and merged to `main`.** They
-run from `docs/SETUP.md` alone (standalone goal met) and were dress-rehearsed on
-a laptop. A NERSC run-through — the real shared-env gate, and the only place the
-GPU notebook runs at scale — is still pending.
+**Tutorial notebooks 00–09 are written and merged to `main`, tracking
+`roman_disperser` v0.14.2** (the elements API: G150 grism + P127 prism). The
+v0.10→v0.14.2 update rewrote the API touchpoints (elements threading, new
+`load_sensitivities`/`select_sources_per_order` signatures, float64-NumPy into
+`get_fpa_pos`), deleted the stale "sky→FPA only correct at Dec = 0" caveats
+(fixed upstream in v0.12.0 by the exact gnomonic projection — notebook 07 now
+*demonstrates* the removed flat-sky error), and added notebook 09 (the prism)
+plus `MIGRATION.md` (what changed for tutorial users; links to the disperser's
+own migration guide). A NERSC run-through — the real shared-env gate, and the
+only place the GPU notebook runs at scale — is still pending.
 
-- Disperser pinned to **v0.10.0** (vendored reference data + `roman-disperser-hydrate`).
+- Disperser pinned to **v0.14.2** (elements API, prism support, lock-resolved
+  reference data via `roman-disperser-hydrate`).
 - Notebooks: 00 env check · 01 spectra→counts · 02 disperse a star · 03 mixed
   field + roll · 04 extraction + 0th-order contamination · 05 PA→line profiles ·
   06 catalogs + batched dispersion · 07 JAX optical-model tools · 08 GPU
-  scale-out. Committed **without outputs** via an nbstripout git filter
-  (`pixi run setup-nbstripout` once per clone).
+  scale-out · 09 the prism. Committed **without outputs** via an nbstripout git
+  filter (`pixi run setup-nbstripout` once per clone).
 - **NERSC env is built** (see "NERSC deployment"): shared CPU+GPU conda envs,
   data hydrated to CFS, auto-named kernels that resolve `ROMAN_DISPERSER_DATA`.
-  Confirm the shared envs carry `roman_disperser ≥ 0.10.0` before a NERSC run.
+  The shared envs predate v0.14.2 — they must be **rebuilt from the updated
+  ymls** (and the CFS data re-hydrated, which also fetches the prism assets)
+  before the next NERSC run.
 - **romanisim wrap dropped from the tutorials** (the once-planned disperse→wrap
   step). romanisim stays bundled in the envs for when wrap content is added back,
-  but is unused by 00–08.
+  but is unused by 00–09.
 - **RRN and a standalone GPU notebook dropped:** GPU scale-out is notebook 08,
-  run by re-executing it on a GPU node. Known issue flagged in 06/07: the
-  sky→FPA conversion (`get_fpa_pos`) is currently only correct at Dec = 0.
+  run by re-executing it on a GPU node.
 
 ## The audience matrix (drives every env decision)
 
@@ -107,8 +115,11 @@ Consequences, and the reason JAX is **never pinned** in this repo's env files:
 
 The disperser's reference data is **vendored** (disperser ≥ 0.10.0) — fetched
 with `roman-disperser-hydrate`, not shipped in the package. The disperser is
-pinned to **`v0.10.0`** (first release with the command) in `pixi.toml`; the
-env ymls inherit it via the export script — bump it in `pixi.toml` only.
+pinned to **`v0.14.2`** in `pixi.toml`; the env ymls inherit it via the export
+script — bump it in `pixi.toml` only. Since v0.14.2 the optical-model delivery
+inside a data dir is resolved from `data-versions.lock` (written by hydrate), so
+a pre-lock or hand-assembled data dir fails loudly — re-hydrate to fix. A full
+hydrate now fetches **both elements'** assets (grism + prism, ~6.4 GB).
 
 - **Data resolution** (disperser side): `$ROMAN_DISPERSER_DATA` →
   `$PIXI_PROJECT_ROOT/data` → `./data`. So the **dev pixi env** lands data in
