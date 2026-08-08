@@ -104,15 +104,21 @@ python -m ipykernel install --user --name roman-tutorials \
 ```
 
 **Hydrate the reference data.** The tutorials use **SCA 5**, so fetch just what
-they need (a few hundred MB) rather than all 18 SCAs:
+they need (a few hundred MB) rather than all 18 SCAs. Notebook 09 uses the
+prism, whose assets are separate manifest keys (`*_prism`):
 
 ```bash
 export ROMAN_DISPERSER_DATA=$PWD/data        # co-located in the repo (./data is git-ignored); or any stable path
-roman-disperser-hydrate --only optical_model,sensitivities,synphot   # essentials (~2 MB)
-roman-disperser-hydrate --only psf --sca 5                          # PSF cache for SCA 5
+roman-disperser-hydrate --only optical_model,sensitivities,synphot   # grism essentials (~2 MB)
+roman-disperser-hydrate --only optical_model_prism,sensitivities_prism   # prism essentials (notebook 09)
+roman-disperser-hydrate --only psf,psf_prism --sca 5                # PSF caches for SCA 5, both elements
 roman-disperser-hydrate --only catalog                              # source catalog (~155 MB; notebook 06)
-# (or just `roman-disperser-hydrate` for everything — all 18 SCAs, ~4.5 GB)
+# (or just `roman-disperser-hydrate` for everything — all 18 SCAs, both elements, ~6.4 GB)
 ```
+
+Hydration writes `data-versions.lock` into the data directory; since disperser
+v0.14.2 that lock is what resolves the optical model at runtime, so always
+populate a data dir via hydrate (a hand-assembled dir fails loudly).
 
 **Make the data visible to the kernel.** A Jupyter kernel does **not** inherit
 your shell, so add `ROMAN_DISPERSER_DATA` to the kernel's `kernel.json`. The
