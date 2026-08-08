@@ -5,7 +5,7 @@
 #     bash scripts/export-conda-envs.sh
 #
 # Produces environment-cpu.yml (pixi env `default`) and environment-gpu.yml
-# (pixi env `gpu`). These are what NERSC/RRN/laptop users build from; the pixi
+# (pixi env `gpu`). These are what conda users build from; the pixi
 # manifest is the single source of truth — edit it, not the generated files.
 set -euo pipefail
 cd "$(dirname "$0")/.."
