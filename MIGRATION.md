@@ -23,12 +23,11 @@ produced with v0.10-era tutorials, expect these differences:
    arrays — pass float64 NumPy (what pandas `.values` gives you).
 2. **v0.12.0 — exact gnomonic (TAN) sky→FPA projection.** The flat-sky
    approximation (Δα·cos δ, Δδ) is gone. Off-equator placements move by up to
-   tens of pixels: ≲0.1 px at Dec 0 rising to ~10 px median (~55 px at the
-   field edge) at Dec 60 over a ±0.4° field. The old tutorials' "only correct
-   at Dec = 0" warnings and workarounds are deleted — sky placement is now
-   valid anywhere, including across RA = 0. **Notebook 07 reproduces the
-   removed flat-sky error directly** (§2), so you can see the size of the
-   effect rather than take it on faith.
+   tens of pixels. **Notebook 07 reproduces the removed flat-sky error
+   directly** (§2): for a ±0.4° square field, median 0.12 px at Dec 0, ~7 px
+   at Dec 30, and ~20 px at Dec 60 (max ~80 px at the field corners). The old
+   tutorials' "only correct at Dec = 0" warnings and workarounds are deleted —
+   sky placement is now valid anywhere, including across RA = 0.
 3. **v0.13.0 — per-SCA RNG re-keying + provenance.** Noise (`ISIM`)
    realisations are keyed per SCA via `jax.random.fold_in`, so they differ
    from ≤v0.12 runs at identical seeds; the noiseless `MODEL` images are
