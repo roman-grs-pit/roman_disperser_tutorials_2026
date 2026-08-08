@@ -29,28 +29,46 @@ import synphot as syn
 from astropy.io import fits
 
 from roman_disperser import paths
+from roman_disperser.elements import get_element
+
+
+def wavelength_grid(element=None, dlam_angstrom=2.0):
+    """Uniform wavelength grid covering a dispersing element's band.
+
+    ``element`` is a :class:`~roman_disperser.elements.DispersingElement`, its
+    name (``"grism"``/``"prism"``), or ``None`` for the grism default. Returns
+    ``(wl_um, wl_angstrom, dlam_angstrom)``. The grism default (0.9-2.0 um,
+    2 A spacing) matches the production catalog's SED grid. Use a coarser
+    ``dlam_angstrom`` to make the dispersers run faster for quick experiments.
+    """
+    el = get_element(element)
+    return grism_wavelength_grid(el.lam_min, el.lam_max, dlam_angstrom)
 
 
 def grism_wavelength_grid(lam_min_um=0.9, lam_max_um=2.0, dlam_angstrom=2.0):
-    """Uniform wavelength grid covering the grism band.
+    """Uniform wavelength grid with explicit band edges (grism by default).
 
-    Returns ``(wl_um, wl_angstrom, dlam_angstrom)``. The default (0.9-2.0 um,
-    2 A spacing) matches the production catalog's SED grid. Use a coarser
-    ``dlam_angstrom`` to make the dispersers run faster for quick experiments.
+    Prefer :func:`wavelength_grid` when the band should follow a dispersing
+    element; this explicit-bounds form is kept for experiments that
+    deliberately use a custom range. Returns ``(wl_um, wl_angstrom,
+    dlam_angstrom)``.
     """
     wl_a = np.arange(lam_min_um * 1e4, lam_max_um * 1e4 + dlam_angstrom / 2, dlam_angstrom)
     return wl_a / 1e4, wl_a, dlam_angstrom
 
 
-def load_sensitivity(sca, order, wl_angstrom, sensitivity_dir=None):
-    """Load a grism sensitivity curve and interpolate onto ``wl_angstrom``.
+def load_sensitivity(sca, order, wl_angstrom, sensitivity_dir=None, element=None):
+    """Load a sensitivity curve and interpolate onto ``wl_angstrom``.
 
-    ``sca`` is the 1-18 detector number, ``order`` is a string ("0"/"1"/"2").
+    ``sca`` is the 1-18 detector number, ``order`` is a string ("0"/"1"/"2"
+    for the grism; the prism has only "1"). ``element`` picks the per-element
+    sensitivity directory when ``sensitivity_dir`` is not given explicitly.
     The curve converts a FLAM spectrum into a per-Angstrom count rate; off the
     tabulated range the sensitivity is taken to be zero. Returns a NumPy array
     the same length as ``wl_angstrom``.
     """
-    sensitivity_dir = Path(sensitivity_dir) if sensitivity_dir else paths.sensitivity_dir()
+    sensitivity_dir = (Path(sensitivity_dir) if sensitivity_dir
+                       else paths.sensitivity_dir(element=get_element(element)))
     smap = yaml.safe_load((sensitivity_dir / "sensitivity_map.yaml").read_text())
     sfile = sensitivity_dir / smap[f"SCA{sca}"][str(order)]
     with fits.open(sfile) as hdul:
@@ -60,7 +78,7 @@ def load_sensitivity(sca, order, wl_angstrom, sensitivity_dir=None):
 
 
 def template_to_counts(template_name, mag, sca, order, wl_um=None, band=None,
-                       redshift=0.0, sensitivity_dir=None):
+                       redshift=0.0, sensitivity_dir=None, element=None):
     """Turn a bundled spectral template into a count-rate spectrum.
 
     Steps (all explained in notebook 01):
@@ -68,21 +86,23 @@ def template_to_counts(template_name, mag, sca, order, wl_um=None, band=None,
       2. normalise it to ``mag`` (AB) in the given bandpass (``band``
          defaults to F158);
       3. sample it onto the wavelength grid as FLAM;
-      4. multiply by the grism sensitivity (SCA, order) and the bin width
-         to get a count rate per wavelength bin.
+      4. multiply by the element's sensitivity (SCA, order) and the bin
+         width to get a count rate per wavelength bin.
 
-    ``redshift`` matters for the galaxy templates: the Kinney-Calzetti
-    atlas spectra are rest-frame UV-optical (~1235-9945 A) and only fall in
-    the grism band once redshifted, so a star uses ``redshift=0`` while a
-    galaxy needs e.g. ``redshift=1.5``. ``wl_um`` defaults to
-    :func:`grism_wavelength_grid`. Returns ``(wl_um, counts)`` where
-    ``counts`` is electrons/s per bin (a plain NumPy array ready to hand to
-    a disperser after ``jnp.asarray``).
+    ``element`` selects the dispersing element (grism by default): it sets
+    the default wavelength grid and the sensitivity directory. ``redshift``
+    matters for the galaxy templates: the Kinney-Calzetti atlas spectra are
+    rest-frame UV-optical (~1235-9945 A) and only fall in the band once
+    redshifted, so a star uses ``redshift=0`` while a galaxy needs e.g.
+    ``redshift=1.5``. ``wl_um`` defaults to :func:`wavelength_grid` for the
+    element. Returns ``(wl_um, counts)`` where ``counts`` is electrons/s per
+    bin (a plain NumPy array ready to hand to a disperser after
+    ``jnp.asarray``).
     """
     from roman_disperser import refdata
 
     if wl_um is None:
-        wl_um, wl_a, dlam_a = grism_wavelength_grid()
+        wl_um, wl_a, dlam_a = wavelength_grid(element)
     else:
         wl_um = np.asarray(wl_um)
         wl_a = wl_um * 1e4
@@ -95,7 +115,8 @@ def template_to_counts(template_name, mag, sca, order, wl_um=None, band=None,
         spec = syn.SourceSpectrum(spec.model, z=redshift)
     spec = spec.normalize(mag * u.ABmag, band=band)
     flam = spec(wl_a * u.AA, flux_unit=syn.units.FLAM).value
-    sens = load_sensitivity(sca, order, wl_a, sensitivity_dir=sensitivity_dir)
+    sens = load_sensitivity(sca, order, wl_a, sensitivity_dir=sensitivity_dir,
+                            element=element)
     counts = flam * sens * dlam_a
     return wl_um, counts
 

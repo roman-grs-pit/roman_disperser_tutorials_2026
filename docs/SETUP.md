@@ -82,10 +82,10 @@ the same layout the maintainer pixi setup uses.
 python -m venv .venv          # in the repo root; .venv is git-ignored
 source .venv/bin/activate
 # SSH (recommended if your key is on GitHub):
-pip install "roman_disperser[full] @ git+ssh://git@github.com/roman-grs-pit/roman_disperser.git@v0.10.0" \
+pip install "roman_disperser[full] @ git+ssh://git@github.com/roman-grs-pit/roman_disperser.git@v0.14.2" \
     jupyterlab ipykernel
 # — or HTTPS (after `gh auth login`):
-#   git+https://github.com/roman-grs-pit/roman_disperser.git@v0.10.0
+#   git+https://github.com/roman-grs-pit/roman_disperser.git@v0.14.2
 ```
 
 **Option B — conda** (use this if you'll also run the romanisim wrap later — it
