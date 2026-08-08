@@ -1,6 +1,5 @@
 # GENERATED from pixi.toml by scripts/export-conda-envs.sh — do not edit by hand.
 # Roman Disperser tutorials, CPU (laptop / RRN / NERSC-CPU). Includes romanisim.
-# Laptop users: run `gh auth login` first (the disperser repo is private).
 # romanisim wrapping also needs CRDS/STPSF data (heavy) — see docs/SETUP.md.
 name: roman-disperser-tutorials
 channels:

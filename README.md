@@ -18,8 +18,8 @@ See **[docs/SETUP.md](docs/SETUP.md)** for environment setup. In short:
 
 - **NERSC** — activate the curated shared conda environment (built from
   `environment-gpu.yml` / `environment-cpu.yml`).
-- **Laptop** (CPU) — a `venv` + `pip install` of the disperser (conda optional);
-  needs GitHub access to the private disperser repo.
+- **Laptop** (CPU) — a `venv` + `pip install` of the disperser (conda
+  optional). The disperser repo is public, so no GitHub auth is needed.
 
 The same notebooks run on CPU or GPU; only the JAX build differs. Then run
 `notebooks/00_environment_check.ipynb` to confirm your setup.

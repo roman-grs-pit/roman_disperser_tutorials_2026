@@ -76,11 +76,11 @@ linux-64 GPU box (CUDA 12).
   laptop + GPU box.
 - The disperser is pulled **from git**, not the `../roman_disperser` sibling
   path, so this repo is reproducible off a laptop (GPU box, CI).
-- **The disperser repo is PRIVATE.** Org membership is authorization, not
-  authentication — a clone still needs `gh auth login` (HTTPS credential
-  helper) or a registered SSH key. This affects only the **laptop** path and
-  the **maintainer pixi solve**; NERSC uses a pre-installed shared env.
-  `docs/SETUP.md` documents both SSH and `gh auth login` (HTTPS) for the laptop.
+- **The disperser repo is PUBLIC** (since 2026-08; it was private before).
+  Clones and pip/pixi installs over HTTPS need no authentication — the
+  manifest and all documented install URLs use the `https://` form. (Historic
+  note: the pre-2026-08 docs described `gh auth login` / SSH-key setup; that
+  requirement is gone.)
 - **`environment-cpu.yml` / `environment-gpu.yml`** (user) are the conda specs —
   **generated** from the pixi envs by `scripts/export-conda-envs.sh` (which
   rewrites the disperser URL ssh→https and names the conda env). Don't hand-edit;
@@ -141,7 +141,6 @@ distilled from the build (`m4943` is the project):
 
 - **Envs:** `/global/common/software/m4943/envs/roman-tutorials-{cpu,gpu}`, built
   with `mamba env create -f environment-{cpu,gpu}.yml -p <prefix>`. Prereqs:
-  `gh auth login` (private disperser clones over HTTPS mid-build),
   `CONDA_PKGS_DIRS=$SCRATCH/conda-pkgs` (keep the pkg cache off `$HOME`),
   `chmod -R g+rX` for group read. Build on a login node — no GPU needed to *build*.
 - **`.grism_sim_setup`** exports `tutorial_2026_cpu` / `tutorial_2026_gpu` (env
