@@ -14,13 +14,13 @@ python = ">=3.12, <3.13"
 [pypi-dependencies]
 # Pull the disperser from git (not the ../roman_disperser sibling) so this
 # repo is reproducible off a laptop — on the GPU box, in CI, etc. [full]
-# brings astropy/synphot/tqdm/pytest. Pinned to v0.10.0, the first release
-# with `roman-disperser-hydrate`; bump as the tutorials track new releases.
+# brings astropy/synphot/tqdm/pytest. Pinned to v0.14.2 (elements API +
+# prism support + lock-resolved reference data); bump as the tutorials
+# track new releases.
 #
-# SSH URL (not https): the disperser repo is private, and this dev manifest
-# resolves via the maintainer's registered SSH key. Laptop *users* use the
-# https form + `gh auth login` (see environment.yml / docs/SETUP.md).
-roman_disperser = { git = "ssh://git@github.com/roman-grs-pit/roman_disperser.git", tag = "v0.10.0", extras = ["full"] }
+# HTTPS URL: the disperser repo is public (since 2026-08), so no auth is
+# needed to solve this manifest anywhere.
+roman_disperser = { git = "https://github.com/roman-grs-pit/roman_disperser.git", tag = "v0.14.2", extras = ["full"] }
 
 [tasks]
 # Confirm which JAX backend is live in the active environment.

@@ -231,8 +231,8 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/0a/09/04ff6e8beaa6cd60a960f925d837c2afa3fffba7860042ab1b52a8358297/pyvo-1.9.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/e0/2e/5bca06d74ca96b5d44585dfbdec7ab13dc9de6a2f9ccd5edaa2b7e3634aa/rad-1.0.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/4e/db/c75f8f9f15d8df43ce5edc5d89af16e381d2cb02a0cfb10ad9b2d3f8b797/roman_datamodels-1.0.0-py3-none-any.whl
-      - pypi: git+ssh://git@github.com/roman-grs-pit/roman_disperser.git#0ed9381273546573cf60268bf1e970bab57667e1
-      - pypi: git+https://github.com/spacetelescope/romanisim.git#b8cf45511363fc147885fec15f1a533e270a3ae8
+      - pypi: git+https://github.com/roman-grs-pit/roman_disperser.git?tag=v0.14.2#3b39801eb646cbf80362982a296b9a85cc3f3ec3
+      - pypi: git+https://github.com/spacetelescope/romanisim.git?branch=main#b8cf45511363fc147885fec15f1a533e270a3ae8
       - pypi: https://files.pythonhosted.org/packages/b7/46/f5af3402b579fd5e11573ce652019a67074317e18c1935cc0b4ba9b35552/secretstorage-3.5.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/6a/23/8146aad7d88f4fcb3a6218f41a60f6c2d4e3a72de72da1825dc7c8f7877c/semantic_version-2.10.0-py2.py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/e8/73/db3468282daf81a550bb409ce2e0756e6b129464c7eee211ba117ba91925/stpsf-2.1.0-py3-none-any.whl
@@ -456,8 +456,8 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/0a/09/04ff6e8beaa6cd60a960f925d837c2afa3fffba7860042ab1b52a8358297/pyvo-1.9.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/e0/2e/5bca06d74ca96b5d44585dfbdec7ab13dc9de6a2f9ccd5edaa2b7e3634aa/rad-1.0.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/4e/db/c75f8f9f15d8df43ce5edc5d89af16e381d2cb02a0cfb10ad9b2d3f8b797/roman_datamodels-1.0.0-py3-none-any.whl
-      - pypi: git+ssh://git@github.com/roman-grs-pit/roman_disperser.git#0ed9381273546573cf60268bf1e970bab57667e1
-      - pypi: git+https://github.com/spacetelescope/romanisim.git#b8cf45511363fc147885fec15f1a533e270a3ae8
+      - pypi: git+https://github.com/roman-grs-pit/roman_disperser.git?tag=v0.14.2#3b39801eb646cbf80362982a296b9a85cc3f3ec3
+      - pypi: git+https://github.com/spacetelescope/romanisim.git?branch=main#b8cf45511363fc147885fec15f1a533e270a3ae8
       - pypi: https://files.pythonhosted.org/packages/6a/23/8146aad7d88f4fcb3a6218f41a60f6c2d4e3a72de72da1825dc7c8f7877c/semantic_version-2.10.0-py2.py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/e8/73/db3468282daf81a550bb409ce2e0756e6b129464c7eee211ba117ba91925/stpsf-2.1.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/42/c2/4f12f4835a6cad09540706b0ae61be2d7a247e451c2674dec68702e2bccb/synphot-1.7.0-cp312-cp312-macosx_11_0_arm64.whl
@@ -695,7 +695,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/0a/09/04ff6e8beaa6cd60a960f925d837c2afa3fffba7860042ab1b52a8358297/pyvo-1.9.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/e0/2e/5bca06d74ca96b5d44585dfbdec7ab13dc9de6a2f9ccd5edaa2b7e3634aa/rad-1.0.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/4e/db/c75f8f9f15d8df43ce5edc5d89af16e381d2cb02a0cfb10ad9b2d3f8b797/roman_datamodels-1.0.0-py3-none-any.whl
-      - pypi: git+ssh://git@github.com/roman-grs-pit/roman_disperser.git?tag=v0.10.0#0ed9381273546573cf60268bf1e970bab57667e1
+      - pypi: git+https://github.com/roman-grs-pit/roman_disperser.git?tag=v0.14.2#3b39801eb646cbf80362982a296b9a85cc3f3ec3
       - pypi: git+https://github.com/spacetelescope/romanisim.git?branch=main#b8cf45511363fc147885fec15f1a533e270a3ae8
       - pypi: https://files.pythonhosted.org/packages/b7/46/f5af3402b579fd5e11573ce652019a67074317e18c1935cc0b4ba9b35552/secretstorage-3.5.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/6a/23/8146aad7d88f4fcb3a6218f41a60f6c2d4e3a72de72da1825dc7c8f7877c/semantic_version-2.10.0-py2.py3-none-any.whl
@@ -921,7 +921,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/0a/09/04ff6e8beaa6cd60a960f925d837c2afa3fffba7860042ab1b52a8358297/pyvo-1.9.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/e0/2e/5bca06d74ca96b5d44585dfbdec7ab13dc9de6a2f9ccd5edaa2b7e3634aa/rad-1.0.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/4e/db/c75f8f9f15d8df43ce5edc5d89af16e381d2cb02a0cfb10ad9b2d3f8b797/roman_datamodels-1.0.0-py3-none-any.whl
-      - pypi: git+ssh://git@github.com/roman-grs-pit/roman_disperser.git?tag=v0.10.0#0ed9381273546573cf60268bf1e970bab57667e1
+      - pypi: git+https://github.com/roman-grs-pit/roman_disperser.git?tag=v0.14.2#3b39801eb646cbf80362982a296b9a85cc3f3ec3
       - pypi: git+https://github.com/spacetelescope/romanisim.git?branch=main#b8cf45511363fc147885fec15f1a533e270a3ae8
       - pypi: https://files.pythonhosted.org/packages/6a/23/8146aad7d88f4fcb3a6218f41a60f6c2d4e3a72de72da1825dc7c8f7877c/semantic_version-2.10.0-py2.py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/e8/73/db3468282daf81a550bb409ce2e0756e6b129464c7eee211ba117ba91925/stpsf-2.1.0-py3-none-any.whl
@@ -1188,7 +1188,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/0a/09/04ff6e8beaa6cd60a960f925d837c2afa3fffba7860042ab1b52a8358297/pyvo-1.9.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/e0/2e/5bca06d74ca96b5d44585dfbdec7ab13dc9de6a2f9ccd5edaa2b7e3634aa/rad-1.0.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/4e/db/c75f8f9f15d8df43ce5edc5d89af16e381d2cb02a0cfb10ad9b2d3f8b797/roman_datamodels-1.0.0-py3-none-any.whl
-      - pypi: git+ssh://git@github.com/roman-grs-pit/roman_disperser.git?tag=v0.10.0#0ed9381273546573cf60268bf1e970bab57667e1
+      - pypi: git+https://github.com/roman-grs-pit/roman_disperser.git?tag=v0.14.2#3b39801eb646cbf80362982a296b9a85cc3f3ec3
       - pypi: git+https://github.com/spacetelescope/romanisim.git?branch=main#b8cf45511363fc147885fec15f1a533e270a3ae8
       - pypi: https://files.pythonhosted.org/packages/b7/46/f5af3402b579fd5e11573ce652019a67074317e18c1935cc0b4ba9b35552/secretstorage-3.5.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/6a/23/8146aad7d88f4fcb3a6218f41a60f6c2d4e3a72de72da1825dc7c8f7877c/semantic_version-2.10.0-py2.py3-none-any.whl
@@ -6110,9 +6110,9 @@ packages:
   - sphinx-rtd-theme ; extra == 'docs'
   - sphinx-astropy ; extra == 'docs'
   requires_python: '>=3.11'
-- pypi: git+ssh://git@github.com/roman-grs-pit/roman_disperser.git#0ed9381273546573cf60268bf1e970bab57667e1
+- pypi: git+https://github.com/roman-grs-pit/roman_disperser.git?tag=v0.14.2#3b39801eb646cbf80362982a296b9a85cc3f3ec3
   name: roman-disperser
-  version: 0.10.0
+  version: 0.14.2
   requires_dist:
   - numpy>=2.0
   - jax>=0.7
@@ -6127,52 +6127,6 @@ packages:
   - synphot>=1.6.1,<2 ; extra == 'full'
   - pytest>=9.0.2,<10 ; extra == 'full'
   requires_python: '>=3.12'
-- pypi: git+ssh://git@github.com/roman-grs-pit/roman_disperser.git?tag=v0.10.0#0ed9381273546573cf60268bf1e970bab57667e1
-  name: roman-disperser
-  version: 0.10.0
-  requires_dist:
-  - numpy>=2.0
-  - jax>=0.7
-  - scipy
-  - pyyaml
-  - matplotlib>=3.10
-  - pandas>=2.3.3,<3
-  - pyarrow
-  - zarr
-  - astropy>=7.2.0,<8 ; extra == 'full'
-  - tqdm ; extra == 'full'
-  - synphot>=1.6.1,<2 ; extra == 'full'
-  - pytest>=9.0.2,<10 ; extra == 'full'
-  requires_python: '>=3.12'
-- pypi: git+https://github.com/spacetelescope/romanisim.git#b8cf45511363fc147885fec15f1a533e270a3ae8
-  name: romanisim
-  version: 0.14.1.dev3+gb8cf45511
-  requires_dist:
-  - asdf>=4.1.0
-  - astropy>=6.0
-  - astropy-healpix>=1.1.2
-  - astroquery>=0.4.11
-  - crds>=13.0.2
-  - defusedxml>=0.5.0
-  - galsim>=2.5.1
-  - roman-datamodels>=0.29.0
-  - gwcs>=0.25.0
-  - numpy>1.26
-  - photutils>=2.3.0
-  - sphinx<7 ; extra == 'docs'
-  - sphinx-automodapi ; extra == 'docs'
-  - sphinx-rtd-theme ; extra == 'docs'
-  - stsci-rtd-theme ; extra == 'docs'
-  - sphinx-astropy ; extra == 'docs'
-  - sphinx-asdf>=0.1.1 ; extra == 'docs'
-  - tomli ; python_full_version < '3.11' and extra == 'docs'
-  - ci-watson>=0.3.0 ; extra == 'test'
-  - pytest>=9.0 ; extra == 'test'
-  - pytest-openfiles>=0.5.0 ; extra == 'test'
-  - pytest-doctestplus>=0.10.0 ; extra == 'test'
-  - pytest-cov>=2.9.0 ; extra == 'test'
-  - stpsf>=2.1.0 ; extra == 'test'
-  requires_python: '>=3.11'
 - pypi: git+https://github.com/spacetelescope/romanisim.git?branch=main#b8cf45511363fc147885fec15f1a533e270a3ae8
   name: romanisim
   version: 0.14.1.dev3+gb8cf45511
