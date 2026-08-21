@@ -1,0 +1,86 @@
+# Smoke test: exercise the documented user path end-to-end and catch big
+# fails automatically. The disperser is pinned (v0.14.2), so what drifts is
+# the unpinned dependency stack (jax, numpy, synphot, ...) that pip resolves
+# fresh for every new user — hence the weekly cron, which is the run that
+# guards the repo's "standalone, works from the docs alone" promise between
+# pushes. Executes notebooks 00-02 (env check + smoke dispersion, spectra ->
+# counts, disperse a star) exactly as SETUP.md Option A installs them, then
+# checks notebook 00's smoke-dispersion total against its validated value.
+#
+# Scope note: runners are CPU-only, so this catches crashes and numeric
+# drift but NOT GPU performance regressions — notebook 08 guards those at
+# the point of use (it warns when a GPU steady-state rate is far off the
+# expected few ms).
+name: smoke
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: '17 6 * * 1'   # weekly (Mon 06:17 UTC): catch dependency drift between pushes
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      ROMAN_DISPERSER_DATA: ${{ github.workspace }}/refdata
+      JAX_COMPILATION_CACHE_DIR: /tmp/jax-cache
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install the user path (SETUP.md Option A)
+        run: |
+          pip install "roman_disperser[full] @ git+https://github.com/roman-grs-pit/roman_disperser.git@v0.14.2" \
+              nbconvert ipykernel
+
+      - name: Cache reference data
+        uses: actions/cache@v4
+        with:
+          path: refdata
+          key: refdata-v0.14.2-sca5-v1
+
+      - name: Hydrate reference data (SETUP.md SCA-5 subsets)
+        run: |
+          if [ ! -f "$ROMAN_DISPERSER_DATA/data-versions.lock" ]; then
+            roman-disperser-hydrate --only optical_model,sensitivities,synphot
+            roman-disperser-hydrate --only optical_model_prism,sensitivities_prism
+            roman-disperser-hydrate --only psf,psf_prism --sca 5
+            roman-disperser-hydrate --only catalog
+          fi
+
+      - name: Execute notebooks 00-02
+        run: |
+          mkdir -p /tmp/nbout
+          for nb in 00_environment_check 01_spectra_to_counts 02_disperse_a_star; do
+            jupyter nbconvert --to notebook --execute \
+              --ExecutePreprocessor.timeout=1800 \
+              --output-dir /tmp/nbout --output "$nb" "notebooks/$nb.ipynb"
+          done
+
+      - name: Check the smoke-dispersion total
+        run: |
+          python - <<'PY'
+          import json, re
+          text = "".join(
+              "".join(o.get("text", []))
+              for c in json.load(open("/tmp/nbout/00_environment_check.ipynb"))["cells"]
+              for o in c.get("outputs", [])
+          )
+          m = re.search(r"smoke dispersion OK — total (\d+)", text)
+          assert m, "smoke-dispersion line not found in executed notebook 00"
+          total = int(m.group(1))
+          # Reference measured 2026-08-20: identical (5331) under jax 0.10.1
+          # (conda-forge) and jax 0.11.1 (pip) on CPU. 0.5% tolerance covers
+          # f32 summation-order differences across platforms.
+          REF = 5331
+          assert abs(total - REF) <= 0.005 * REF, \
+              f"smoke total {total} deviates from validated reference {REF}"
+          print(f"smoke total {total} vs reference {REF}: OK")
+          PY

@@ -1,5 +1,9 @@
 # roman_disperser_tutorials_2026
 
+[![smoke](https://github.com/roman-grs-pit/roman_disperser_tutorials_2026/actions/workflows/smoke.yml/badge.svg)](https://github.com/roman-grs-pit/roman_disperser_tutorials_2026/actions/workflows/smoke.yml)
+
+**[Setup](docs/SETUP.md) · [Contents](#contents) · [Migration from v0.10](MIGRATION.md) · [Changelog](#changelog)**
+
 Tutorial notebooks, markdowns, and supporting material for the Roman GRS PIT's
 [Roman Disperser](https://github.com/roman-grs-pit/roman_disperser) tool.
 
@@ -58,6 +62,19 @@ that strips outputs from the files in place.
 
 Releases are date-tagged (`vYYYY.MM`), since the tutorials track the evolving
 `roman_disperser` rather than versioning themselves. Newest first.
+
+### Unreleased (on `main`)
+
+- Notebook 08 now **warns when a GPU's steady-state rate is far off** the
+  expected few ms per source-order — any modern GPU should be faster, so a
+  large number means the JAX build has a performance bug (e.g. jax 0.11.0's
+  ~15–20× GPU scatter regression, fixed in 0.11.1). This catches performance
+  regressions on the user's own hardware, where CI cannot see them.
+- **Weekly smoke CI** (badge above): executes notebooks 00–02 via the
+  SETUP.md user path (venv-style pip install + hydration) and checks the
+  notebook-00 smoke-dispersion total against its validated reference —
+  catches crashes and numeric drift from the unpinned dependency stack.
+- README: CI badge and navigation links (including this changelog).
 
 ### v2026.08 — track disperser v0.14.2 (2026-08-21)
 
