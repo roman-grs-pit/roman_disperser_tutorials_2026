@@ -53,3 +53,37 @@ strips outputs from what git stores while leaving your working-copy outputs
 intact. The filter config lives in `.git/config`, so it's per-clone; the
 `.gitattributes` mapping is committed. `pixi run clear-nb` is a manual fallback
 that strips outputs from the files in place.
+
+## Changelog
+
+Releases are date-tagged (`vYYYY.MM`), since the tutorials track the evolving
+`roman_disperser` rather than versioning themselves. Newest first.
+
+### v2026.08 — track disperser v0.14.2 (2026-08-21)
+
+- Tutorials updated from disperser v0.10.0 to **v0.14.2**: the elements API
+  (G150 grism + P127 prism) threads through every notebook, and the stale
+  "sky→FPA only correct at Dec = 0" caveats are gone (fixed upstream in
+  v0.12.0; notebook 07 now demonstrates the removed flat-sky error).
+- **New notebook 09 — the prism**: same pipeline with `element=PRISM`; trace,
+  dispersion, and resolving power (per-pixel R vs the mission R_GRISM = 461,
+  reconciled via the ~3-px resolution element).
+- **[MIGRATION.md](MIGRATION.md)**: what changed for tutorial users moving
+  from v0.10, including the results-changing placement/RNG fixes upstream.
+- Notebook 08 reworked to separate **one-time compile from steady-state
+  throughput**: it now times the same pass twice and projects from the steady
+  rate (a10g: 441 ms/source-order first pass vs 4.1 ms steady).
+- Notebook 02: callout explaining the benign `cpu_aot_loader` /
+  "+prefer-no-gather … SIGILL" XLA message seen on JAX compilation-cache hits.
+- Setup: repo is standalone (NERSC deployment dropped); the disperser repo is
+  now public, so installs need no GitHub auth; SETUP.md states the
+  Python ≥ 3.12 floor.
+- Validation for this release: all 12 notebooks executed green in the dev pixi
+  env (cold JAX cache, CPU; notebook 08 on an a10g GPU) **and** in a clean
+  user-style venv built from SETUP.md alone. Rendered HTML of the validated
+  run is attached to the GitHub release.
+
+### 2026-06 — initial tutorials (untagged)
+
+- Notebooks 00–08 against disperser v0.10.0, dress-rehearsed on a laptop and
+  NERSC (the NERSC deployment has since been dropped).
