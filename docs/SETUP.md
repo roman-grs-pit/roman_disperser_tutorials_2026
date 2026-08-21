@@ -23,6 +23,9 @@ with no GitHub auth.
 Create the environment. The tutorials need only pip-installable packages
 (`roman_disperser[full]` pulls jax, numpy, scipy, matplotlib, pandas, pyarrow,
 zarr, astropy, synphot), so a **venv is the lightest path** — no conda required.
+You need **Python ≥ 3.12** (`roman_disperser`'s floor; check `python --version`
+first — an older interpreter fails at `pip install` with an unhelpful resolver
+error rather than a clear message).
 
 **Option A — venv + pip (recommended):**
 
